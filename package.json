@@ -1,0 +1,30 @@
+{
+  "name": "react-wrap-balancer",
+  "version": "0.1.0",
+  "description": "Better text wrapping.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.tsx --format cjs,esm --dts-resolve --external react"
+  },
+  "keywords": [
+    "react",
+    "wrapping",
+    "text",
+    "typography"
+  ],
+  "author": "Shu Ding <g@shud.in>",
+  "license": "MIT",
+  "devDependencies": {
+    "react": "^18.2.0",
+    "tsup": "^6.4.0",
+    "typescript": "^4.8.4"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  }
+}
