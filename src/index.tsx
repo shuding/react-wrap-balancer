@@ -1,6 +1,7 @@
 import React from 'react'
 
-const DO_BALANCE = Symbol.for('__wrap_balancer__')
+const SYMBOL_KEY = '__wrap_balancer__'
+const DO_BALANCE = Symbol.for(SYMBOL_KEY)
 const IS_SERVER = typeof window === 'undefined'
 const useIsomorphicLayoutEffect = IS_SERVER
   ? React.useEffect
@@ -55,14 +56,14 @@ export const Balancer: React.FC<Props> = ({ as = 'p', children, ...props }) => {
 
   // Re-balance on content change and on mount/hydration
   useIsomorphicLayoutEffect(() => {
-    window[Symbol.for('react-balanced')](id)
+    window[DO_BALANCE](id)
   }, [children])
 
   // Re-balance on resize
   React.useEffect(() => {
     if (containerRef.current) {
       const resizeObserver = new ResizeObserver(() => {
-        window[Symbol.for('react-balanced')](id)
+        window[DO_BALANCE](id)
       })
       resizeObserver.observe(containerRef.current)
       return () => {
@@ -79,7 +80,7 @@ export const Balancer: React.FC<Props> = ({ as = 'p', children, ...props }) => {
       <script
         dangerouslySetInnerHTML={{
           // Calculate the balance initially for SSR
-          __html: `window[Symbol.for("react-balanced")]("${id}")`,
+          __html: `window[Symbol.for("${SYMBOL_KEY}")]("${id}")`,
         }}
       ></script>
     </>
