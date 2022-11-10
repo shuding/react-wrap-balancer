@@ -9,21 +9,22 @@ const useIsomorphicLayoutEffect = IS_SERVER
 
 // Register the balancer globally on client.
 if (!IS_SERVER) {
-  window[DO_BALANCE] = (id: string) => {
-    const el = window.document.querySelector(
-      `[data-balanced="${id}"]`
-    ) as HTMLElement
-    if (!el) return
+  window[DO_BALANCE] = (id: string, wrapper?: HTMLElement) => {
+    wrapper =
+      wrapper ||
+      (window.document.querySelector(`[data-balancer="${id}"]`) as HTMLElement)
+    const container = wrapper.parentElement as HTMLElement
 
-    const wrapper = el.childNodes[0] as HTMLElement
+    if (!wrapper || !container) return
+
     const update = (width) => (wrapper.style.maxWidth = width + 'px')
 
     // Reset wrapper width
     wrapper.style.maxWidth = ''
 
     // Get the intial container size
-    const w = el.offsetWidth
-    const h = el.offsetHeight
+    const w = container.offsetWidth
+    const h = container.offsetHeight
 
     // Synchrnously do binary search and calculate the layout
     let l = 0
@@ -32,7 +33,7 @@ if (!IS_SERVER) {
     while (l + 1 < r) {
       m = ~~((l + r) / 2)
       update(m)
-      if (el.offsetHeight === h) {
+      if (container.offsetHeight === h) {
         r = m
       } else {
         l = m
@@ -45,37 +46,50 @@ if (!IS_SERVER) {
 }
 
 type Props = {
-  as: string
+  as?: string
 }
 
-export const Balancer: React.FC<Props> = ({ as = 'p', children, ...props }) => {
+export const Balancer: React.FC<Props> = ({
+  as = 'span',
+  children,
+  ...props
+}) => {
   const As = as
-  const style = Object.assign({}, props.style)
   const id = React.useId()
-  const containerRef = React.useRef()
+  const wrapperRef = React.useRef()
 
   // Re-balance on content change and on mount/hydration
   useIsomorphicLayoutEffect(() => {
-    window[DO_BALANCE](id)
+    if (!wrapperRef.current) return
+    window[DO_BALANCE](0, wrapperRef.current)
   }, [children])
 
   // Re-balance on resize
   React.useEffect(() => {
-    if (containerRef.current) {
-      const resizeObserver = new ResizeObserver(() => {
-        window[DO_BALANCE](id)
-      })
-      resizeObserver.observe(containerRef.current)
-      return () => {
-        resizeObserver.unobserve(containerRef.current)
-      }
+    if (!wrapperRef.current) return
+
+    const container = wrapperRef.current.parentElement as HTMLElement
+    if (!container) return
+
+    const resizeObserver = new ResizeObserver(() => {
+      if (!wrapperRef.current) return
+      window[DO_BALANCE](0, wrapperRef.current)
+    })
+    resizeObserver.observe(container)
+    return () => {
+      resizeObserver.unobserve(container)
     }
   }, [])
 
   return (
     <>
-      <As {...props} style={style} data-balanced={id} ref={containerRef}>
-        <span style={{ display: 'inline-block' }}>{children}</span>
+      <As
+        {...props}
+        data-balancer={id}
+        ref={wrapperRef}
+        style={{ display: 'inline-block' }}
+      >
+        {children}
       </As>
       <script
         dangerouslySetInnerHTML={{
