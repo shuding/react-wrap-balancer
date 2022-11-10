@@ -87,7 +87,7 @@ export const Balancer: React.FC<Props> = ({
         {...props}
         data-balancer={id}
         ref={wrapperRef}
-        style={{ display: 'inline-block' }}
+        style={{ display: 'inline-block', textDecoration: 'inherit' }}
       >
         {children}
       </As>
