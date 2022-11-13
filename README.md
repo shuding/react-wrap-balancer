@@ -1,5 +1,11 @@
 # React Wrap Balancer
 
+One simple component to make `<Balancer>My Awesome Title</Balancer>` wrap more elegantly:
+
+![](.github/demo.gif)
+
+Notice that in “Balanced Title Wrapping” above, every line of wrapped text has almost the same width, so it will likely not to have one single word in a line.
+
 ## Usage
 
 Install it to your React project:
