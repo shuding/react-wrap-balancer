@@ -1,6 +1,6 @@
 # React Wrap Balancer
 
-One simple component to make `<Balancer>My Awesome Title</Balancer>` wrap more elegantly:
+One simple component to make your titles more elegant:
 
 ![](.github/demo.gif)
 
