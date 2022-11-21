@@ -166,7 +166,7 @@ export const Balancer: React.FC<Props> = ({
       <script
         dangerouslySetInnerHTML={{
           // Calculate the balance initially for SSR
-          __html: `window.${SYMBOL_KEY}=${'((e,t)=>{let l;t=t||window.document.querySelector(`[data-balancer="${e}"]`);let a=t.parentElement,f=e=>t.style.maxWidth=e+"px";t.style.maxWidth="";let o=a.offsetWidth,d=a.offsetHeight,i=0,r=o;for(;i+1<r;)f(l=~~((i+r)/2)),a.offsetHeight==d?r=l:i=l;f(r)});'};window.${SYMBOL_KEY}("${id}")`,
+          __html: `window.${SYMBOL_KEY}=${'((e,t)=>{let l;t=t||window.document.querySelector(`[data-balancer="${e}"]`);let a=t.parentElement,f=e=>t.style.maxWidth=e+"px";t.style.maxWidth="";let o=a.offsetWidth,d=a.offsetHeight,i=0,r=o;for(;i+1<r;)f(l=~~((i+r)/2)),a.offsetHeight==d?r=l:i=l;f(r)})'};window.${SYMBOL_KEY}("${id}")`,
         }}
       ></script>
     </>

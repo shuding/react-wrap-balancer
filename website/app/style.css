@@ -60,9 +60,7 @@ body {
   font-family: var(--font-alice);
   margin: 80px 0 40px;
   font-size: 26px;
-  font-weight: 400;
   letter-spacing: -0.03rem;
-  font-weight: 600;
 }
 
 h3 {
@@ -71,6 +69,17 @@ h3 {
   margin: 20px 0 80px;
   color: #888;
   font-weight: 400;
+}
+
+h3::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 0.35em solid transparent;
+  border-right: 0.35em solid transparent;
+  border-bottom: 0.6em solid currentColor;
+  display: inline-block;
+  margin-right: 0.4em;
 }
 
 h3 + .headline {
@@ -236,7 +245,15 @@ h2 {
   margin-bottom: 10px;
 }
 
+.tooltip-container {
+  position: relative;
+}
 .TooltipContent {
+  position: absolute;
+  left: 50%;
+  transform: translate3d(-50%, -10px, 0);
+  margin: auto;
+  bottom: 100%;
   border-radius: 9px;
   padding: 10px;
   line-height: 1;
@@ -247,6 +264,11 @@ h2 {
 }
 .TooltipArrow {
   fill: white;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  margin: auto;
 }
 
 .tooltip-trigger {
@@ -313,5 +335,20 @@ ul {
   .controller::before,
   .controller::after {
     display: none;
+  }
+  blockquote {
+    font-size: 15px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+  h3 {
+    font-size: 16px;
+  }
+  .headline {
+    font-size: 22px;
+  }
+  .TooltipContent {
+    font-size: 10px;
   }
 }

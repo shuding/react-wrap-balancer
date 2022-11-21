@@ -2,7 +2,6 @@
 
 import { Balancer } from 'react-wrap-balancer'
 import { useSpring, animated } from '@react-spring/web'
-import * as Tooltip from '@radix-ui/react-tooltip'
 
 const content = (
   <>
@@ -114,7 +113,7 @@ export default function () {
       />
       <h3>
         <Balancer>
-          ⯅ React Wrap Balancer avoids single hanging word on the last line
+          React Wrap Balancer avoids single hanging word on the last line
         </Balancer>
       </h3>
       <p className='headline'>
@@ -166,83 +165,83 @@ export default function () {
       <Comparison
         a={(width) => (
           <>
-            <Tooltip.Provider>
-              <Tooltip.Root open>
-                <Tooltip.Trigger asChild>
-                  <div className='tooltip-trigger'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                      fill='currentColor'
-                      width='16'
-                    >
-                      <path
-                        fillRule='evenodd'
-                        d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z'
-                        clipRule='evenodd'
-                      />
-                    </svg>
+            <div className='tooltip-container'>
+              <div className='TooltipContent'>
+                <animated.div style={{ width }}>
+                  <div className='tooltip item'>
+                    This deployment is currently in progress.{' '}
+                    <a href='javascript:void(0)'>Read more</a>.
                   </div>
-                </Tooltip.Trigger>
-                <Tooltip.Content
-                  className='TooltipContent'
-                  sideOffset={5}
-                  avoidCollisions={false}
+                </animated.div>
+                <svg
+                  className='TooltipArrow'
+                  width='10'
+                  height='5'
+                  viewBox='0 0 30 10'
+                  preserveAspectRatio='none'
                 >
-                  <animated.div style={{ width }}>
-                    <div className='tooltip item'>
-                      This deployment is currently in progress. Click{' '}
-                      <a href='javascript:void(0)'>here</a> to learn more.
-                    </div>
-                  </animated.div>
-                  <Tooltip.Arrow className='TooltipArrow' />
-                </Tooltip.Content>
-              </Tooltip.Root>
-            </Tooltip.Provider>
+                  <polygon points='0,0 30,0 15,10'></polygon>
+                </svg>
+              </div>
+              <div className='tooltip-trigger'>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  viewBox='0 0 20 20'
+                  fill='currentColor'
+                  width='16'
+                >
+                  <path
+                    fillRule='evenodd'
+                    d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z'
+                    clipRule='evenodd'
+                  />
+                </svg>
+              </div>
+            </div>
           </>
         )}
         b={(width) => (
           <>
-            <Tooltip.Provider>
-              <Tooltip.Root open>
-                <Tooltip.Trigger asChild>
-                  <div className='tooltip-trigger'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 20 20'
-                      fill='currentColor'
-                      width='16'
-                    >
-                      <path
-                        fillRule='evenodd'
-                        d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z'
-                        clipRule='evenodd'
-                      />
-                    </svg>
+            <div className='tooltip-container'>
+              <div className='TooltipContent'>
+                <animated.div style={{ width }}>
+                  <div className='tooltip item'>
+                    <Balancer>
+                      This deployment is currently in progress.{' '}
+                      <a href='javascript:void(0)'>Read more</a>.
+                    </Balancer>
                   </div>
-                </Tooltip.Trigger>
-                <Tooltip.Content
-                  className='TooltipContent'
-                  sideOffset={5}
-                  avoidCollisions={false}
+                </animated.div>
+                <svg
+                  className='TooltipArrow'
+                  width='10'
+                  height='5'
+                  viewBox='0 0 30 10'
+                  preserveAspectRatio='none'
                 >
-                  <animated.div style={{ width }}>
-                    <div className='tooltip item'>
-                      <Balancer>
-                        This deployment is currently in progress. Click{' '}
-                        <a href='javascript:void(0)'>here</a> to learn more.
-                      </Balancer>
-                    </div>
-                  </animated.div>
-                  <Tooltip.Arrow className='TooltipArrow' />
-                </Tooltip.Content>
-              </Tooltip.Root>
-            </Tooltip.Provider>
+                  <polygon points='0,0 30,0 15,10'></polygon>
+                </svg>
+              </div>
+              <div className='tooltip-trigger'>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  viewBox='0 0 20 20'
+                  fill='currentColor'
+                  width='16'
+                >
+                  <path
+                    fillRule='evenodd'
+                    d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z'
+                    clipRule='evenodd'
+                  />
+                </svg>
+              </div>
+            </div>
           </>
         )}
       />
       <h3>
-        <Balancer>⯅ Useful in tooltips and other UI components</Balancer>
+        <Balancer>Useful in tooltips and other UI components</Balancer>
       </h3>
       <Comparison
         align='left'
@@ -266,7 +265,7 @@ export default function () {
         }
       />
       <h3>
-        <Balancer>⯅ Left aligned, non-latin content</Balancer>
+        <Balancer>Left aligned, non-latin content</Balancer>
       </h3>
       <Comparison
         a={
@@ -298,7 +297,7 @@ export default function () {
       />
       <h3>
         <Balancer>
-          ⯅ Makes multi-line content more compact with fewer visual changes when
+          Makes multi-line content more compact with fewer visual changes when
           resizing
         </Balancer>
       </h3>

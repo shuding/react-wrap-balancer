@@ -13,7 +13,6 @@
   "license": "ISC",
   "dependencies": {
     "@next/font": "^13.0.3",
-    "@radix-ui/react-tooltip": "^1.0.2",
     "@react-spring/web": "^9.5.5",
     "next": "13.0.4-canary.2",
     "react": "^18.2.0",
