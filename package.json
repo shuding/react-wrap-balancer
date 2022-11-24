@@ -1,6 +1,6 @@
 {
   "name": "react-wrap-balancer",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Better text wrapping.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
