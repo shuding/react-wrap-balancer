@@ -1,6 +1,6 @@
 'use client'
 
-import { Balancer } from 'react-wrap-balancer'
+import Balancer from 'react-wrap-balancer'
 import { useSpring, animated } from '@react-spring/web'
 
 const content = (
@@ -125,26 +125,49 @@ export default function () {
       </p>
       <p>
         <label>Usage</label>
-        <code>{`import { Balancer } from 'react-wrap-balancer'\n\n// ...\n\n<h1>\n  <Balancer>My Title</Balancer>\n</h1>`}</code>
+        <code>{`import Balancer from 'react-wrap-balancer'\n\n// ...\n\n<h1>\n  <Balancer>My Title</Balancer>\n</h1>`}</code>
       </p>
       <div className='p'>
         <label>Features</label>
         <ul>
           <li>&lt;0.7kB Gzipped</li>
           <li>Fast O(log n) algorithm</li>
-          <li>Doesn’t cause layout shift</li>
-          <li>SSR and streaming SSR supported</li>
+          <li>
+            Doesn’t cause{' '}
+            <a href='https://web.dev/cls/' target='_blank'>
+              layout shifts
+            </a>
+          </li>
+          <li>
+            SSR and{' '}
+            <a
+              href='https://beta.nextjs.org/docs/data-fetching/streaming-and-suspense'
+              target='_blank'
+            >
+              streaming SSR
+            </a>{' '}
+            supported
+          </li>
+          <li>
+            <a
+              href='https://beta.nextjs.org/docs/rendering/server-and-client-components'
+              target='_blank'
+            >
+              Next.js 13 app directory and React Server Components
+            </a>{' '}
+            compatible
+          </li>
         </ul>
       </div>
       <p>
         <label>Requirements</label>
-        This library requires at least React 18.0.0, and IE 11 is not supported.
+        This library requires React ≥ 18.0.0, and IE 11 is not supported.
       </p>
       <p className='headline'>
         <Balancer>How Does It Work?</Balancer>
       </p>
       <p>
-        React Wrap Balancer tries to reduce the width of the content, but not
+        React Wrap Balancer tries to reduce the width of the content, but avoids
         causing an extra line break. When the minimum width is reached, each
         line should approximately have the same width, hence it’ll look more
         balanced.
@@ -303,6 +326,28 @@ export default function () {
       </h3>
       <p className='headline'>
         <Balancer>About React Wrap Balancer</Balancer>
+      </p>
+      <p style={{ textAlign: 'center', fontSize: 14, marginBottom: '0.5em' }}>
+        <Balancer>
+          This project was inspired by Adobe’s{' '}
+          <a href=' https://github.com/adobe/balance-text' target='_blank'>
+            balance-text
+          </a>{' '}
+          project, NYT’s{' '}
+          <a href='https://github.com/nytimes/text-balancer' target='_blank'>
+            text-balancer
+          </a>{' '}
+          project. If you want to learn more, you can also take a look at the{' '}
+          <span className='code'>
+            <a
+              href='https://drafts.csswg.org/css-text-4/#text-wrap'
+              target='_blank'
+            >
+              text-wrap: balance
+            </a>
+          </span>{' '}
+          proposal.
+        </Balancer>
       </p>
       <p style={{ textAlign: 'center', fontSize: 14 }}>
         <Balancer>

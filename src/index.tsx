@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 
 const SYMBOL_KEY = '__wrap_balancer'
@@ -96,7 +98,7 @@ const useIsomorphicLayoutEffect = IS_SERVER
 //   const h = container.offsetHeight
 
 //   // Synchrnously do binary search and calculate the layout
-//   let l = 0
+//   let l = w / 2
 //   let r = w
 //   let m
 //   while (l + 1 < r) {
@@ -117,11 +119,7 @@ type Props = {
   as?: string
 }
 
-export const Balancer: React.FC<Props> = ({
-  as = 'span',
-  children,
-  ...props
-}) => {
+const Balancer: React.FC<Props> = ({ as = 'span', children, ...props }) => {
   const As = as
   const id = React.useId()
   const wrapperRef = React.useRef()
@@ -133,7 +131,7 @@ export const Balancer: React.FC<Props> = ({
   }, [children])
 
   // Re-balance on resize
-  React.useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!wrapperRef.current) return
 
     const container = wrapperRef.current.parentElement as HTMLElement
@@ -144,9 +142,7 @@ export const Balancer: React.FC<Props> = ({
       window[SYMBOL_KEY](0, wrapperRef.current)
     })
     resizeObserver.observe(container)
-    return () => {
-      resizeObserver.unobserve(container)
-    }
+    return () => resizeObserver.unobserve(container)
   }, [])
 
   return (
@@ -166,9 +162,11 @@ export const Balancer: React.FC<Props> = ({
       <script
         dangerouslySetInnerHTML={{
           // Calculate the balance initially for SSR
-          __html: `window.${SYMBOL_KEY}=${'((e,t)=>{let l;t=t||window.document.querySelector(`[data-balancer="${e}"]`);let a=t.parentElement,f=e=>t.style.maxWidth=e+"px";t.style.maxWidth="";let o=a.offsetWidth,d=a.offsetHeight,i=0,r=o;for(;i+1<r;)f(l=~~((i+r)/2)),a.offsetHeight==d?r=l:i=l;f(r)})'};window.${SYMBOL_KEY}("${id}")`,
+          __html: `window.${SYMBOL_KEY}=${'((e,t)=>{let l;t=t||window.document.querySelector(`[data-balancer="${e}"]`);let a=t.parentElement,f=e=>t.style.maxWidth=e+"px";t.style.maxWidth="";let o=a.offsetWidth,d=a.offsetHeight,i=o/2,r=o;for(;i+1<r;)f(l=~~((i+r)/2)),a.offsetHeight==d?r=l:i=l;f(r)})'};window.${SYMBOL_KEY}("${id}")`,
         }}
       ></script>
     </>
   )
 }
+
+export default Balancer
