@@ -1,7 +1,9 @@
 'use client'
 
+import copy from 'copy-to-clipboard'
 import Balancer from 'react-wrap-balancer'
 import { useSpring, animated } from '@react-spring/web'
+import { useState } from 'react'
 
 const content = (
   <>
@@ -72,6 +74,8 @@ function Comparison({ a, b, align = 'left' }) {
 }
 
 export default function () {
+  const [copying, setCopying] = useState(false)
+
   return (
     <main>
       <div className='logo-container'>
@@ -121,16 +125,64 @@ export default function () {
       </p>
       <p>
         <label>Installation</label>
-        <code>npm install react-wrap-balancer</code>
+        <code
+          className='installation'
+          onClick={() => {
+            copy('npm install react-wrap-balancer')
+            setCopying(true)
+            setTimeout(() => {
+              setCopying(false)
+            }, 2000)
+          }}
+        >
+          npm install react-wrap-balancer
+          <span className='copy'>
+            {copying ? (
+              <svg
+                width='15'
+                height='15'
+                viewBox='0 0 15 15'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  d='M11.4669 3.72684C11.7558 3.91574 11.8369 4.30308 11.648 4.59198L7.39799 11.092C7.29783 11.2452 7.13556 11.3467 6.95402 11.3699C6.77247 11.3931 6.58989 11.3355 6.45446 11.2124L3.70446 8.71241C3.44905 8.48022 3.43023 8.08494 3.66242 7.82953C3.89461 7.57412 4.28989 7.55529 4.5453 7.78749L6.75292 9.79441L10.6018 3.90792C10.7907 3.61902 11.178 3.53795 11.4669 3.72684Z'
+                  fill='currentColor'
+                  fillRule='evenodd'
+                  clipRule='evenodd'
+                ></path>
+              </svg>
+            ) : (
+              <svg
+                width='15'
+                height='15'
+                viewBox='0 0 15 15'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  d='M5 2V1H10V2H5ZM4.75 0C4.33579 0 4 0.335786 4 0.75V1H3.5C2.67157 1 2 1.67157 2 2.5V12.5C2 13.3284 2.67157 14 3.5 14H11.5C12.3284 14 13 13.3284 13 12.5V2.5C13 1.67157 12.3284 1 11.5 1H11V0.75C11 0.335786 10.6642 0 10.25 0H4.75ZM11 2V2.25C11 2.66421 10.6642 3 10.25 3H4.75C4.33579 3 4 2.66421 4 2.25V2H3.5C3.22386 2 3 2.22386 3 2.5V12.5C3 12.7761 3.22386 13 3.5 13H11.5C11.7761 13 12 12.7761 12 12.5V2.5C12 2.22386 11.7761 2 11.5 2H11Z'
+                  fill='currentColor'
+                  fillRule='evenodd'
+                  clipRule='evenodd'
+                  stroke='currentColor'
+                  strokeWidth={0.1}
+                ></path>
+              </svg>
+            )}
+          </span>
+        </code>
       </p>
       <p>
         <label>Usage</label>
-        <code>{`import Balancer from 'react-wrap-balancer'\n\n// ...\n\n<h1>\n  <Balancer>My Title</Balancer>\n</h1>`}</code>
+        <code>
+          {`import Balancer from 'react-wrap-balancer'\n\n// ...\n\n<h1>\n  <Balancer>My Title</Balancer>\n</h1>`}
+        </code>
       </p>
       <div className='p'>
         <label>Features</label>
         <ul>
-          <li>&lt;0.7kB Gzipped</li>
+          <li>0.67 kB Gzipped</li>
           <li>Fast O(log n) algorithm</li>
           <li>
             Doesn’t cause{' '}
@@ -162,6 +214,31 @@ export default function () {
       <p>
         <label>Requirements</label>
         This library requires React ≥ 18.0.0, and IE 11 is not supported.
+      </p>
+      <p>
+        <a
+          href='https://github.com/shuding/react-wrap-balancer'
+          target='_blank'
+          className='github-link'
+        >
+          <span>View project on</span>
+          <span>
+            <svg
+              width='1.1em'
+              viewBox='0 0 15 15'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path
+                d='M7.49933 0.25C3.49635 0.25 0.25 3.49593 0.25 7.50024C0.25 10.703 2.32715 13.4206 5.2081 14.3797C5.57084 14.446 5.70302 14.2222 5.70302 14.0299C5.70302 13.8576 5.69679 13.4019 5.69323 12.797C3.67661 13.235 3.25112 11.825 3.25112 11.825C2.92132 10.9874 2.44599 10.7644 2.44599 10.7644C1.78773 10.3149 2.49584 10.3238 2.49584 10.3238C3.22353 10.375 3.60629 11.0711 3.60629 11.0711C4.25298 12.1788 5.30335 11.8588 5.71638 11.6732C5.78225 11.205 5.96962 10.8854 6.17658 10.7043C4.56675 10.5209 2.87415 9.89918 2.87415 7.12104C2.87415 6.32925 3.15677 5.68257 3.62053 5.17563C3.54576 4.99226 3.29697 4.25521 3.69174 3.25691C3.69174 3.25691 4.30015 3.06196 5.68522 3.99973C6.26337 3.83906 6.8838 3.75895 7.50022 3.75583C8.1162 3.75895 8.73619 3.83906 9.31523 3.99973C10.6994 3.06196 11.3069 3.25691 11.3069 3.25691C11.7026 4.25521 11.4538 4.99226 11.3795 5.17563C11.8441 5.68257 12.1245 6.32925 12.1245 7.12104C12.1245 9.9063 10.4292 10.5192 8.81452 10.6985C9.07444 10.9224 9.30633 11.3648 9.30633 12.0413C9.30633 13.0102 9.29742 13.7922 9.29742 14.0299C9.29742 14.2239 9.42828 14.4496 9.79591 14.3788C12.6746 13.4179 14.75 10.7025 14.75 7.50024C14.75 3.49593 11.5036 0.25 7.49933 0.25Z'
+                fill='currentColor'
+                fill-rule='evenodd'
+                clip-rule='evenodd'
+              ></path>
+            </svg>
+            GitHub
+          </span>
+        </a>
       </p>
       <p className='headline'>
         <Balancer>How Does It Work?</Balancer>
@@ -327,7 +404,14 @@ export default function () {
       <p className='headline'>
         <Balancer>About React Wrap Balancer</Balancer>
       </p>
-      <p style={{ textAlign: 'center', fontSize: 14, marginBottom: '0.5em' }}>
+      <p
+        style={{
+          textAlign: 'left',
+          fontSize: 14,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         <Balancer>
           This project was inspired by Adobe’s{' '}
           <a href=' https://github.com/adobe/balance-text' target='_blank'>
@@ -337,7 +421,14 @@ export default function () {
           <a href='https://github.com/nytimes/text-balancer' target='_blank'>
             text-balancer
           </a>{' '}
-          project. If you want to learn more, you can also take a look at the{' '}
+          project, and Daniel Aleksandersen’s{' '}
+          <a
+            href='https://www.ctrl.blog/entry/text-wrap-balance.html'
+            target='_blank'
+          >
+            Improving the New York Times’ line wrap balancer
+          </a>
+          . If you want to learn more, you can also take a look at the{' '}
           <span className='code'>
             <a
               href='https://drafts.csswg.org/css-text-4/#text-wrap'

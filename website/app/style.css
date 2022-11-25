@@ -58,9 +58,52 @@ body {
 .headline {
   text-align: center;
   font-family: var(--font-alice);
-  margin: 80px 0 40px;
+  margin: 80px 0 50px;
   font-size: 26px;
-  letter-spacing: -0.03rem;
+  letter-spacing: -0.04rem;
+  line-height: 1.45;
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  margin: 0.8em 0;
+  font-size: 14px;
+  gap: 0.3em;
+  user-select: none;
+}
+.github-link span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+}
+
+.installation {
+  cursor: copy;
+  transition: all 0.2s ease;
+}
+
+.installation:hover {
+  background-color: #ffffffaa;
+}
+.installation:active .copy {
+  opacity: 0.2;
+}
+
+.copy {
+  position: absolute;
+  right: 8.6px;
+  width: 2em;
+  height: 2em;
+  border-radius: 1em;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  transition: all 0.1s ease;
 }
 
 h3 {
@@ -90,11 +133,16 @@ a {
   color: inherit;
   text-decoration-thickness: from-font;
   text-underline-position: from-font;
+  transition: opacity 0.2s ease;
 }
 
 a:hover {
+  opacity: 0.6;
+}
+a.logo:hover {
   transition: mask-position 2s ease, -webkit-mask-position 2s ease;
   mask-position: 120%;
+  opacity: 1;
 }
 
 main {
@@ -127,6 +175,7 @@ code,
     monospace;
 }
 code {
+  position: relative;
   background: #fff;
   display: block;
   border-radius: 6px;
