@@ -1,4 +1,4 @@
-lockfileVersion: 5.4
+lockfileVersion: 5.3
 
 importers:
 
@@ -23,9 +23,9 @@ importers:
       react-wrap-balancer: workspace:*
     dependencies:
       '@next/font': 13.0.3
-      '@react-spring/web': 9.5.5_biqbaboplfbrettd7655fr4n2y
+      '@react-spring/web': 9.5.5_react-dom@18.2.0+react@18.2.0
       copy-to-clipboard: 3.3.3
-      next: 13.0.4-canary.2_biqbaboplfbrettd7655fr4n2y
+      next: 13.0.4-canary.2_react-dom@18.2.0+react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-wrap-balancer: link:..
@@ -236,7 +236,7 @@ packages:
     resolution: {integrity: sha512-7I/qY8H7Enwasxr4jU6WmtNK+RZ4Z/XvSlDvjXFVe7ii1x0MoSlkw6pD7xuac8qrHQRm9BTcbZNyeeKApYsvCg==}
     dev: false
 
-  /@react-spring/web/9.5.5_biqbaboplfbrettd7655fr4n2y:
+  /@react-spring/web/9.5.5_react-dom@18.2.0+react@18.2.0:
     resolution: {integrity: sha512-+moT8aDX/ho/XAhU+HRY9m0LVV9y9CK6NjSRaI+30Re150pB3iEip6QfnF4qnhSCQ5drpMF0XRXHgOTY/xbtFw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -805,7 +805,7 @@ packages:
     hasBin: true
     dev: false
 
-  /next/13.0.4-canary.2_biqbaboplfbrettd7655fr4n2y:
+  /next/13.0.4-canary.2_react-dom@18.2.0+react@18.2.0:
     resolution: {integrity: sha512-wA7xnNAQIjgTlr0eWRUyeNdkJkcuC7bw68GQ2wnONJSm7V4tg73wfU+u5GiSq9xVkHb3/PJR1w2Lr2eTylfroA==}
     engines: {node: '>=14.6.0'}
     hasBin: true
