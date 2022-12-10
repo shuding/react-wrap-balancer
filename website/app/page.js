@@ -22,6 +22,7 @@ function Comparison({ a, b, align = 'left' }) {
       <div className='controller'>
         <input
           type='range'
+          defaultValue='55'
           onChange={(e) => {
             api.start({ width: +e.target.value / 100 })
           }}
@@ -74,7 +75,7 @@ function Comparison({ a, b, align = 'left' }) {
 }
 
 export default function () {
-  const [copying, setCopying] = useState(false)
+  const [copying, setCopying] = useState(0)
 
   return (
     <main>
@@ -129,15 +130,15 @@ export default function () {
           className='installation'
           onClick={() => {
             copy('npm install react-wrap-balancer')
-            setCopying(true)
+            setCopying((c) => c + 1)
             setTimeout(() => {
-              setCopying(false)
+              setCopying((c) => c - 1)
             }, 2000)
           }}
         >
           npm install react-wrap-balancer
           <span className='copy'>
-            {copying ? (
+            {copying > 0 ? (
               <svg
                 width='15'
                 height='15'

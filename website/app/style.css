@@ -23,7 +23,7 @@ body {
   font-feature-settings: 'ss04';
   line-height: 1.5;
   --w0: 320px;
-  --w1: 27.5vw;
+  --w1: min(27.5vw, 480px);
 }
 
 .logo-container {
@@ -151,6 +151,7 @@ main {
   align-items: center;
   padding: 40px 20px;
   margin: 0 auto;
+  max-width: 1800px;
 }
 
 main > * {
@@ -383,10 +384,13 @@ ul {
   .controller {
     position: sticky;
     z-index: 1;
-    bottom: 15px;
+    bottom: 25px;
     margin-top: 15px;
     border: 1px solid #e5e5e5;
     border-radius: 20px;
+    box-shadow: 0 5px 10px rgb(0 0 0 / 4%);
+    backdrop-filter: blur(10px);
+    background: rgb(255 255 255 / 83%);
   }
   .controller::before,
   .controller::after {
