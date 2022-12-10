@@ -85,7 +85,7 @@ const useIsomorphicLayoutEffect = IS_SERVER
 // const layout = (id: string, wrapper?: HTMLElement) => {
 //   wrapper =
 //     wrapper ||
-//     (window.document.querySelector(`[data-balancer="${id}"]`) as HTMLElement)
+//     (document.querySelector(`[data-balancer="${id}"]`) as HTMLElement)
 //   const container = wrapper.parentElement as HTMLElement
 
 //   const update = (width) => (wrapper.style.maxWidth = width + 'px')
@@ -94,8 +94,9 @@ const useIsomorphicLayoutEffect = IS_SERVER
 //   wrapper.style.maxWidth = ''
 
 //   // Get the intial container size
-//   const w = container.offsetWidth
-//   const h = container.offsetHeight
+//   const w = container.clientWidth
+//   const h = container.clientHeight
+//   if (!w) return
 
 //   // Synchrnously do binary search and calculate the layout
 //   let l = w / 2
@@ -104,7 +105,7 @@ const useIsomorphicLayoutEffect = IS_SERVER
 //   while (l + 1 < r) {
 //     m = ~~((l + r) / 2)
 //     update(m)
-//     if (container.offsetHeight == h) {
+//     if (container.clientHeight == h) {
 //       r = m
 //     } else {
 //       l = m
@@ -117,6 +118,33 @@ const useIsomorphicLayoutEffect = IS_SERVER
 
 type Props = {
   as?: string
+  children?: React.ReactNode
+}
+
+// As Next.js adds `display: none` to `body` for development, we need to trigger
+// a re-balance right after the style is removed, synchronously.
+if (!IS_SERVER && process.env.NODE_ENV !== 'production') {
+  const next_dev_style = document.querySelector('[data-next-hide-fouc]')
+  if (next_dev_style) {
+    const callback = (mutationList) => {
+      for (const mutation of mutationList) {
+        if (mutation.removedNodes.length) {
+          for (const node of mutation.removedNodes) {
+            if (node === next_dev_style) {
+              observer.disconnect()
+              const el = document.querySelectorAll('[data-balancer]')
+              // @ts-ignore
+              for (const e of el) {
+                self[SYMBOL_KEY](0, e)
+              }
+            }
+          }
+        }
+      }
+    }
+    const observer = new MutationObserver(callback)
+    observer.observe(document.head, { childList: true })
+  }
 }
 
 const Balancer: React.FC<Props> = ({ as = 'span', children, ...props }) => {
@@ -127,7 +155,7 @@ const Balancer: React.FC<Props> = ({ as = 'span', children, ...props }) => {
   // Re-balance on content change and on mount/hydration
   useIsomorphicLayoutEffect(() => {
     if (!wrapperRef.current) return
-    window[SYMBOL_KEY](0, wrapperRef.current)
+    self[SYMBOL_KEY](0, wrapperRef.current)
   }, [children])
 
   // Re-balance on resize
@@ -139,7 +167,7 @@ const Balancer: React.FC<Props> = ({ as = 'span', children, ...props }) => {
 
     const resizeObserver = new ResizeObserver(() => {
       if (!wrapperRef.current) return
-      window[SYMBOL_KEY](0, wrapperRef.current)
+      self[SYMBOL_KEY](0, wrapperRef.current)
     })
     resizeObserver.observe(container)
     return () => resizeObserver.unobserve(container)
@@ -156,13 +184,14 @@ const Balancer: React.FC<Props> = ({ as = 'span', children, ...props }) => {
           verticalAlign: 'top',
           textDecoration: 'inherit',
         }}
+        suppressHydrationWarning={true}
       >
         {children}
       </As>
       <script
         dangerouslySetInnerHTML={{
           // Calculate the balance initially for SSR
-          __html: `window.${SYMBOL_KEY}=${'((e,t)=>{let l;t=t||window.document.querySelector(`[data-balancer="${e}"]`);let a=t.parentElement,f=e=>t.style.maxWidth=e+"px";t.style.maxWidth="";let o=a.offsetWidth,d=a.offsetHeight,i=o/2,r=o;for(;i+1<r;)f(l=~~((i+r)/2)),a.offsetHeight==d?r=l:i=l;f(r)})'};window.${SYMBOL_KEY}("${id}")`,
+          __html: `self.${SYMBOL_KEY}=${'((e,t)=>{let l;t=t||document.querySelector(`[data-balancer="${e}"]`);let a=t.parentElement,f=e=>t.style.maxWidth=e+"px";t.style.maxWidth="";let o=a.clientWidth,d=a.clientHeight,i=o/2,r=o;if(!o)return;for(;i+1<r;)f(l=~~((i+r)/2)),a.clientHeight==d?r=l:i=l;f(r)})'};self.${SYMBOL_KEY}("${id}")`,
         }}
       ></script>
     </>
