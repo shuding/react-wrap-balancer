@@ -529,6 +529,7 @@ export default function () {
             alignItems: 'center',
             gap: '.4rem',
             textDecoration: 'none',
+            whiteSpace: 'nowrap',
           }}
         >
           <span>Deployed on</span>
