@@ -17,7 +17,7 @@ npm i react-wrap-balancer
 And wrap any text with it:
 
 ```jsx
-import { Balancer } from 'react-wrap-balancer'
+import Balancer from 'react-wrap-balancer'
 
 // ...
 
