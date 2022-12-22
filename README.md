@@ -1,14 +1,14 @@
-# React Wrap Balancer
+[![React Wrap Balancer - Simple React Component That Makes Titles More Readable](.github/card.png)](https://react-wrap-balancer.vercel.app)
 
-One simple component to make your titles more elegant:
+## Introduction
+
+[**React Wrap Balancer**](https://react-wrap-balancer.vercel.app) is a simple React Component that makes your titles more readable in different viewport sizes. It improves the wrapping to avoid situations like single word in the last line, makes the content more “balanced”:
 
 ![](.github/demo.gif)
 
-Notice that in “Balanced Title Wrapping” above, every line of wrapped text has almost the same width, so it will likely not to have one single word in a line.
-
 ## Usage
 
-Install it to your React project:
+To start using the library, install it to your project:
 
 ```bash
 npm i react-wrap-balancer
@@ -30,13 +30,16 @@ function Title() {
 }
 ```
 
-## Requirements
+For full documentation and use cases, please visit [**react-wrap-balancer.vercel.app**](https://react-wrap-balancer.vercel.app).
 
-This library uses browser and React 18 APIs such as:
-- `ResizeObserver`
-- `Symbol.for`
-- `useId()` hook
+## About
 
-## License
+This project was inspired by Adobe’s [balance-text](https://github.com/adobe/balance-text) project, NYT’s [text-balancer](https://github.com/nytimes/text-balancer) project, and Daniel Aleksandersen’s [Improving the New York Times’ line wrap balancer](https://www.ctrl.blog/entry/text-wrap-balance.html). If you want to learn more, you can also take a look at the [text-wrap: balance](https://drafts.csswg.org/css-text-4/#text-wrap) proposal.
 
-MIT.
+Special thanks to [Emil Kowalski](https://twitter.com/emilkowalski_) for testing and feedback.
+
+Created by [Shu Ding](https://twitter.com/shuding_) in 2022, released under the MIT license.
+
+<a aria-label="Vercel logo" href="https://vercel.com">
+  <img src="https://badgen.net/badge/icon/Made%20by%20Vercel?icon=zeit&label&color=black&labelColor=black">
+</a>
