@@ -1,0 +1,475 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+p,
+h1,
+h2 {
+  word-break: break-word;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: subpixel-antialiased;
+  color: #222;
+  background-color: #f5f5f5;
+  font-feature-settings: 'ss04';
+  line-height: 1.5;
+  --w0: 320px;
+  --w1: min(27.5vw, 480px);
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.logo {
+  display: inline-block;
+  border: 5px solid currentColor;
+  padding: 0 6px 0 4px;
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.021em;
+  line-height: 34px;
+  margin: 0;
+  user-select: none;
+  border-radius: 7px;
+  align-self: center;
+  text-decoration: none;
+  mask-image: linear-gradient(
+    45deg,
+    black 25%,
+    rgba(0, 0, 0, 0.2) 50%,
+    black 75%
+  );
+  mask-size: 800%;
+  mask-position: 0%;
+}
+
+.headline {
+  text-align: center;
+  font-family: var(--font-alice);
+  margin: 80px 0 50px;
+  font-size: 26px;
+  letter-spacing: -0.04rem;
+  line-height: 1.45;
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  margin: 0.8em 0;
+  font-size: 14px;
+  gap: 0.3em;
+  user-select: none;
+}
+.github-link span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+}
+
+.installation {
+  cursor: copy;
+  transition: all 0.2s ease;
+}
+
+.installation:hover {
+  background-color: #ffffffaa;
+}
+.installation:active .copy {
+  opacity: 0.2;
+}
+
+.copy {
+  position: absolute;
+  right: 8.6px;
+  width: 2em;
+  height: 2em;
+  border-radius: 1em;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  transition: all 0.1s ease;
+}
+
+h3 {
+  text-align: center;
+  font-family: var(--font-alice);
+  margin: 30px 0 80px;
+  color: #888;
+  font-weight: 400;
+}
+
+h3 > span::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 0.35em solid transparent;
+  border-right: 0.35em solid transparent;
+  border-bottom: 0.6em solid currentColor;
+  display: inline-block;
+  margin-right: 0.4em;
+}
+
+h3 + .headline {
+  margin-top: 10px;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: from-font;
+  text-underline-position: from-font;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.6;
+}
+a.logo:hover {
+  transition: mask-position 2s ease, -webkit-mask-position 2s ease;
+  mask-position: 120%;
+  opacity: 1;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  margin: 0 auto;
+  max-width: 1800px;
+}
+
+main > * {
+  width: 100%;
+  max-width: 600px;
+}
+
+label {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 12px;
+  display: block;
+  letter-spacing: 0.04rem;
+  margin-bottom: 8px;
+  color: #888;
+  user-select: none;
+}
+
+code,
+.code {
+  font-family: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, Consolas,
+    monospace;
+}
+code {
+  position: relative;
+  background: #fff;
+  display: block;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+.code {
+  font-size: 0.92em;
+}
+
+p,
+.p {
+  line-height: 1.8;
+  margin: 0 0 1.5em;
+}
+
+.controller {
+  position: relative;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  width: auto;
+  height: 32px;
+  padding: 5px 10px;
+  font-size: 15px;
+  background-color: #fff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  user-select: none;
+}
+
+.controller::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  background-color: transparent;
+  border-bottom: 10px solid white;
+  border-right: 10px solid white;
+  border-bottom-right-radius: 20px;
+  left: -10px;
+  bottom: -10px;
+  clip-path: inset(0 10px 10px 0);
+}
+
+.controller::after {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  background-color: transparent;
+  border-bottom: 10px solid white;
+  border-left: 10px solid white;
+  border-bottom-left-radius: 20px;
+  right: -10px;
+  bottom: -10px;
+  clip-path: inset(0 0 10px 10px);
+}
+
+.controller input {
+  appearance: none;
+  background: #dedede;
+  height: 3px;
+  border-radius: 3px;
+}
+
+.demo-container {
+  max-width: unset;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.demo {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 8%), 0 3px 10px -6px rgb(0 0 0 / 10%);
+}
+
+.demo > div {
+  flex: 1;
+}
+
+.demo .item {
+  border: 1px dashed transparent;
+  border-radius: 2px;
+  transition: border-color 0.5s ease;
+}
+
+.demo legend {
+  font-size: 13px;
+  margin-bottom: 5px;
+  padding: 0;
+  text-align: left;
+  color: #888;
+  user-select: none;
+}
+
+h2 {
+  margin: 10px 0 0;
+  font-size: 22px;
+}
+
+.skeleton {
+  display: inline-block;
+  width: var(--w);
+  height: 24px;
+  margin-top: 24px;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+}
+.skeleton + .skeleton {
+  margin-top: 12px;
+}
+.skeleton:last-child {
+  margin-bottom: 10px;
+}
+
+.tooltip-container {
+  position: relative;
+}
+.TooltipContent {
+  position: absolute;
+  left: 50%;
+  transform: translate3d(-50%, -10px, 0);
+  margin: auto;
+  bottom: 100%;
+  border-radius: 9px;
+  padding: 10px;
+  line-height: 1;
+  background-color: white;
+  box-shadow: 0 1px 5px #0000000f, 0 5px 20px #00000017;
+  font-size: 14px;
+  user-select: none;
+}
+.TooltipArrow {
+  fill: white;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  margin: auto;
+}
+
+.tooltip-trigger {
+  margin-top: 120px;
+  margin-bottom: 10px;
+  padding: 4px;
+  text-align: center;
+  font-size: 14px;
+}
+.tooltip {
+  line-height: 1.5;
+  text-align: center;
+}
+
+.controller:active + .demo .item {
+  border-color: #229dff;
+}
+
+blockquote::before {
+  content: '“';
+  display: block;
+  font-size: 80px;
+  text-align: center;
+  color: #ddd;
+  margin-bottom: -40px;
+}
+
+blockquote {
+  line-height: 1.65;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-alice);
+  margin: 0 0 20px;
+  font-size: 18px;
+}
+
+ul {
+  margin: 0;
+  padding-left: 12px;
+  list-style-position: inside;
+}
+
+h2.ratio-title {
+  position: relative;
+  margin-bottom: 1em;
+  background: #fff2e0;
+  border-right: 1px dashed #c59759;
+  border-left: 1px dashed #c59759;
+}
+h2.ratio-title span {
+  background: #cdebff;
+}
+h2.ratio-title:after,
+h2.ratio-ruler span:after {
+  content: '0';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  font-size: 11px;
+  transform: translateX(-50%);
+  margin-top: 2px;
+  margin-left: -1px;
+  font-weight: 400;
+}
+h2.ratio-ruler {
+  margin-top: 0;
+  position: absolute;
+  width: 100%;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1;
+}
+h2.ratio-ruler > span {
+  position: relative;
+  border-right: 1px dashed #2d76a7;
+  border-left: 1px dashed #2d76a7;
+}
+h2.ratio-ruler span span {
+  color: transparent;
+}
+h2.ratio-ruler span:after {
+  content: '1';
+}
+
+/* Mobile */
+@media screen and (max-width: 640px) {
+  .demo {
+    flex-direction: column;
+  }
+  body {
+    --w0: 200px;
+    --w1: 80vw;
+  }
+  .demo-container {
+    flex-direction: column-reverse;
+  }
+  .controller {
+    position: sticky;
+    z-index: 1;
+    bottom: 25px;
+    margin-top: 15px;
+    border: 1px solid #e5e5e5;
+    border-radius: 20px;
+    box-shadow: 0 5px 10px rgb(0 0 0 / 4%);
+    backdrop-filter: blur(10px);
+    background: rgb(255 255 255 / 83%);
+  }
+  .controller::before,
+  .controller::after {
+    display: none;
+  }
+  blockquote {
+    font-size: 15px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+  h3 {
+    font-size: 16px;
+  }
+  .headline {
+    font-size: 22px;
+  }
+  .TooltipContent {
+    font-size: 10px;
+  }
+  h2.ratio-ruler,
+  h2.ratio-title {
+    font-size: 22px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  h2.ratio-ruler,
+  h2.ratio-title {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  h2.ratio-ruler,
+  h2.ratio-title {
+    font-size: 16px;
+  }
+}
