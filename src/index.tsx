@@ -141,6 +141,7 @@ const Balancer: React.FC<Props> = ({
         {children}
       </As>
       <script
+        suppressHydrationWarning={true}
         dangerouslySetInnerHTML={{
           // Calculate the balance initially for SSR
           __html: `self.${SYMBOL_KEY}=${MINIFIED_RELAYOUT_STR};self.${SYMBOL_KEY}("${id}",${ratio})`,
