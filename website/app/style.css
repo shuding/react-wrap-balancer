@@ -412,6 +412,21 @@ h2.ratio-ruler span:after {
   content: '1';
 }
 
+.benchmark {
+  display: flex;
+  padding: 20px 16px;
+  box-sizing: border-box;
+  width: calc(100vw - 32px);
+  max-width: 700px;
+  background-color: white;
+  border-radius: 6px;
+  margin: 0 0 1.5em 0;
+}
+
+.benchmark img {
+  width: 100%;
+}
+
 /* Mobile */
 @media screen and (max-width: 640px) {
   .demo {
