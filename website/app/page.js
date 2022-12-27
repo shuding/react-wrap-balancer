@@ -3,7 +3,7 @@
 import copy from 'copy-to-clipboard'
 import Balancer from 'react-wrap-balancer'
 import { useSpring, animated } from '@react-spring/web'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 const content = (
   <>
@@ -125,6 +125,7 @@ function Ratio() {
 
 export default function () {
   const [copying, setCopying] = useState(0)
+  const pointerPos = useRef({ x: -1, y: -1 })
 
   return (
     <main>
@@ -177,8 +178,22 @@ export default function () {
         <label>Installation</label>
         <code
           className='installation'
-          onClick={() => {
-            copy('npm install react-wrap-balancer')
+          onPointerDown={(e) => {
+            pointerPos.current = { x: e.clientX, y: e.clientY }
+          }}
+          onClick={(e) => {
+            let text = 'npm install react-wrap-balancer'
+
+            // Only copy the selected text if the pointer is moved
+            if (
+              Math.abs(e.clientX - pointerPos.current.x) > 5 ||
+              Math.abs(e.clientY - pointerPos.current.y) > 5
+            ) {
+              text = window.getSelection().toString()
+              if (!text) return
+            }
+
+            copy(text)
             setCopying((c) => c + 1)
             setTimeout(() => {
               setCopying((c) => c - 1)
@@ -189,6 +204,7 @@ export default function () {
           <span className='copy'>
             {copying > 0 ? (
               <svg
+                key='copy'
                 width='15'
                 height='15'
                 viewBox='0 0 15 15'
@@ -204,6 +220,7 @@ export default function () {
               </svg>
             ) : (
               <svg
+                key='copied'
                 width='15'
                 height='15'
                 viewBox='0 0 15 15'

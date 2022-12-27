@@ -106,6 +106,19 @@ body {
   transition: all 0.1s ease;
 }
 
+.copy svg {
+  animation: fadein 0.5s ease forwards;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 h3 {
   text-align: center;
   font-family: var(--font-alice);
