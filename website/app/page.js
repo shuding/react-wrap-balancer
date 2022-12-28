@@ -421,7 +421,6 @@ export default function () {
         <Balancer>Useful in tooltips and other UI components</Balancer>
       </h3>
       <Comparison
-        align='left'
         a={
           <>
             <h2 className='item'>
