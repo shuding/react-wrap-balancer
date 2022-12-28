@@ -8,53 +8,60 @@ const useIsomorphicLayoutEffect = IS_SERVER
   ? React.useEffect
   : React.useLayoutEffect
 
-const relayout = (
+type RelayoutFn = (
   id: string | number,
   ratio: number,
   wrapper?: HTMLElement
-) => {
-  wrapper =
-    wrapper || (document.querySelector(`[data-br="${id}"]`) as HTMLElement)
-  const container = wrapper.parentElement as HTMLElement
+) => void
 
-  const update = (width) => (wrapper.style.maxWidth = width + 'px')
+declare global {
+  interface Window {
+    [SYMBOL_KEY]: RelayoutFn
+  }
+}
+
+const relayout: RelayoutFn = (id, ratio, wrapper) => {
+  wrapper = wrapper || document.querySelector<HTMLElement>(`[data-br="${id}"]`)
+  const container = wrapper.parentElement
+
+  const update = (width: number) => (wrapper.style.maxWidth = width + 'px')
 
   // Reset wrapper width
   wrapper.style.maxWidth = ''
 
   // Get the intial container size
-  const w = container.clientWidth
-  const h = container.clientHeight
+  const width = container.clientWidth
+  const height = container.clientHeight
 
   // Synchronously do binary search and calculate the layout
-  let l = w / 2
-  let r = w
-  let m
+  let left: number = width / 2
+  let right: number = width
+  let middle: number
 
-  if (w) {
-    while (l + 1 < r) {
-      m = ~~((l + r) / 2)
-      update(m)
-      if (container.clientHeight == h) {
-        r = m
+  if (width) {
+    while (left + 1 < right) {
+      middle = ~~((left + right) / 2)
+      update(middle)
+      if (container.clientHeight === height) {
+        right = middle
       } else {
-        l = m
+        left = middle
       }
     }
 
     // Update the wrapper width
-    update(r * ratio + w * (1 - ratio))
+    update(right * ratio + width * (1 - ratio))
   }
 }
 
 const MINIFIED_RELAYOUT_STR = relayout.toString()
 
-type Props = {
+interface BalancerProps extends React.HTMLAttributes<HTMLElement> {
   /**
    * The HTML tag to use for the wrapper element.
    * @default 'span'
    */
-  as?: string
+  as?: React.ElementType
   /**
    * The balance ratio of the wrapper width (0 <= ratio <= 1).
    * 0 means the wrapper width is the same as the container width (no balance, browser default).
@@ -68,18 +75,20 @@ type Props = {
 // As Next.js adds `display: none` to `body` for development, we need to trigger
 // a re-balance right after the style is removed, synchronously.
 if (!IS_SERVER && process.env.NODE_ENV !== 'production') {
-  const next_dev_style = document.querySelector('[data-next-hide-fouc]')
+  const next_dev_style = document.querySelector<HTMLElement>(
+    '[data-next-hide-fouc]'
+  )
   if (next_dev_style) {
-    const callback = (mutationList) => {
+    const callback: MutationCallback = (mutationList) => {
       for (const mutation of mutationList) {
-        for (const node of mutation.removedNodes) {
-          if (node === next_dev_style) {
-            observer.disconnect()
-            const el = document.querySelectorAll('[data-br]')
-            // @ts-ignore
-            for (const e of el) {
-              self[SYMBOL_KEY](0, +e.dataset.brr, e)
-            }
+        for (const node of Array.from(mutation.removedNodes)) {
+          if (node !== next_dev_style) continue
+
+          observer.disconnect()
+          const elements = document.querySelectorAll<HTMLElement>('[data-br]')
+
+          for (const element of Array.from(elements)) {
+            self[SYMBOL_KEY](0, +element.dataset.brr, element)
           }
         }
       }
@@ -89,15 +98,14 @@ if (!IS_SERVER && process.env.NODE_ENV !== 'production') {
   }
 }
 
-const Balancer: React.FC<Props> = ({
-  as = 'span',
+const Balancer: React.FC<BalancerProps> = ({
+  as: Wrapper = 'span',
   ratio = 1,
   children,
   ...props
 }) => {
-  const As = as
   const id = React.useId()
-  const wrapperRef = React.useRef()
+  const wrapperRef = React.useRef<HTMLElement>()
 
   // Re-balance on content change and on mount/hydration
   useIsomorphicLayoutEffect(() => {
@@ -113,7 +121,7 @@ const Balancer: React.FC<Props> = ({
   useIsomorphicLayoutEffect(() => {
     if (!wrapperRef.current) return
 
-    const container = wrapperRef.current.parentElement as HTMLElement
+    const container = wrapperRef.current.parentElement
     if (!container) return
 
     const resizeObserver = new ResizeObserver(() => {
@@ -126,7 +134,7 @@ const Balancer: React.FC<Props> = ({
 
   return (
     <>
-      <As
+      <Wrapper
         {...props}
         data-br={id}
         data-brr={ratio}
@@ -136,17 +144,17 @@ const Balancer: React.FC<Props> = ({
           verticalAlign: 'top',
           textDecoration: 'inherit',
         }}
-        suppressHydrationWarning={true}
+        suppressHydrationWarning
       >
         {children}
-      </As>
+      </Wrapper>
       <script
-        suppressHydrationWarning={true}
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{
           // Calculate the balance initially for SSR
           __html: `self.${SYMBOL_KEY}=${MINIFIED_RELAYOUT_STR};self.${SYMBOL_KEY}("${id}",${ratio})`,
         }}
-      ></script>
+      />
     </>
   )
 }

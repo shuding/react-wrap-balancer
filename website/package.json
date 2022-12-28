@@ -12,10 +12,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@next/font": "^13.0.3",
+    "@next/font": "^13.1.1",
     "@react-spring/web": "^9.5.5",
     "copy-to-clipboard": "^3.3.3",
-    "next": "13.0.8-canary.2",
+    "next": "13.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-wrap-balancer": "workspace:*"
