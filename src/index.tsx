@@ -13,11 +13,10 @@ const relayout = (
   ratio: number,
   wrapper?: HTMLElement
 ) => {
-  wrapper =
-    wrapper || (document.querySelector(`[data-br="${id}"]`) as HTMLElement)
-  const container = wrapper.parentElement as HTMLElement
+  wrapper = wrapper || document.querySelector<HTMLElement>(`[data-br="${id}"]`)
+  const container = wrapper.parentElement
 
-  const update = (width) => (wrapper.style.maxWidth = width + 'px')
+  const update = (width: number) => (wrapper.style.maxWidth = width + 'px')
 
   // Reset wrapper width
   wrapper.style.maxWidth = ''
@@ -27,9 +26,9 @@ const relayout = (
   const h = container.clientHeight
 
   // Synchronously do binary search and calculate the layout
-  let l = w / 2
-  let r = w
-  let m
+  let l: number = w / 2
+  let r: number = w
+  let m: number
 
   if (w) {
     while (l + 1 < r) {
@@ -49,12 +48,12 @@ const relayout = (
 
 const MINIFIED_RELAYOUT_STR = relayout.toString()
 
-type Props = {
+interface BalancerProps extends React.HTMLAttributes<HTMLElement> {
   /**
    * The HTML tag to use for the wrapper element.
    * @default 'span'
    */
-  as?: string
+  as?: React.ElementType
   /**
    * The balance ratio of the wrapper width (0 <= ratio <= 1).
    * 0 means the wrapper width is the same as the container width (no balance, browser default).
@@ -68,18 +67,20 @@ type Props = {
 // As Next.js adds `display: none` to `body` for development, we need to trigger
 // a re-balance right after the style is removed, synchronously.
 if (!IS_SERVER && process.env.NODE_ENV !== 'production') {
-  const next_dev_style = document.querySelector('[data-next-hide-fouc]')
+  const next_dev_style = document.querySelector<HTMLElement>(
+    '[data-next-hide-fouc]'
+  )
   if (next_dev_style) {
-    const callback = (mutationList) => {
+    const callback: MutationCallback = (mutationList) => {
       for (const mutation of mutationList) {
-        for (const node of mutation.removedNodes) {
-          if (node === next_dev_style) {
-            observer.disconnect()
-            const el = document.querySelectorAll('[data-br]')
-            // @ts-ignore
-            for (const e of el) {
-              self[SYMBOL_KEY](0, +e.dataset.brr, e)
-            }
+        for (const node of Array.from(mutation.removedNodes)) {
+          if (node !== next_dev_style) continue
+
+          observer.disconnect()
+          const elements = document.querySelectorAll<HTMLElement>('[data-br]')
+
+          for (const element of Array.from(elements)) {
+            self[SYMBOL_KEY](0, +element.dataset.brr, element)
           }
         }
       }
@@ -89,15 +90,14 @@ if (!IS_SERVER && process.env.NODE_ENV !== 'production') {
   }
 }
 
-const Balancer: React.FC<Props> = ({
-  as = 'span',
+const Balancer: React.FC<BalancerProps> = ({
+  as: Component = 'span',
   ratio = 1,
   children,
   ...props
 }) => {
-  const As = as
   const id = React.useId()
-  const wrapperRef = React.useRef()
+  const wrapperRef = React.useRef<HTMLElement>()
 
   // Re-balance on content change and on mount/hydration
   useIsomorphicLayoutEffect(() => {
@@ -113,7 +113,7 @@ const Balancer: React.FC<Props> = ({
   useIsomorphicLayoutEffect(() => {
     if (!wrapperRef.current) return
 
-    const container = wrapperRef.current.parentElement as HTMLElement
+    const container = wrapperRef.current.parentElement
     if (!container) return
 
     const resizeObserver = new ResizeObserver(() => {
@@ -126,7 +126,7 @@ const Balancer: React.FC<Props> = ({
 
   return (
     <>
-      <As
+      <Component
         {...props}
         data-br={id}
         data-brr={ratio}
@@ -136,17 +136,17 @@ const Balancer: React.FC<Props> = ({
           verticalAlign: 'top',
           textDecoration: 'inherit',
         }}
-        suppressHydrationWarning={true}
+        suppressHydrationWarning
       >
         {children}
-      </As>
+      </Component>
       <script
-        suppressHydrationWarning={true}
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{
           // Calculate the balance initially for SSR
           __html: `self.${SYMBOL_KEY}=${MINIFIED_RELAYOUT_STR};self.${SYMBOL_KEY}("${id}",${ratio})`,
         }}
-      ></script>
+      />
     </>
   )
 }
