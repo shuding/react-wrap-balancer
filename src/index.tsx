@@ -8,11 +8,19 @@ const useIsomorphicLayoutEffect = IS_SERVER
   ? React.useEffect
   : React.useLayoutEffect
 
-const relayout = (
+type RelayoutFn = (
   id: string | number,
   ratio: number,
   wrapper?: HTMLElement
-) => {
+) => void
+
+declare global {
+  interface Window {
+    [SYMBOL_KEY]: RelayoutFn
+  }
+}
+
+const relayout: RelayoutFn = (id, ratio, wrapper) => {
   wrapper = wrapper || document.querySelector<HTMLElement>(`[data-br="${id}"]`)
   const container = wrapper.parentElement
 
