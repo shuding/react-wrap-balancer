@@ -22,27 +22,27 @@ const relayout = (
   wrapper.style.maxWidth = ''
 
   // Get the intial container size
-  const w = container.clientWidth
-  const h = container.clientHeight
+  const width = container.clientWidth
+  const height = container.clientHeight
 
   // Synchronously do binary search and calculate the layout
-  let l: number = w / 2
-  let r: number = w
-  let m: number
+  let left: number = width / 2
+  let right: number = width
+  let middle: number
 
-  if (w) {
-    while (l + 1 < r) {
-      m = ~~((l + r) / 2)
-      update(m)
-      if (container.clientHeight == h) {
-        r = m
+  if (width) {
+    while (left + 1 < right) {
+      middle = ~~((left + right) / 2)
+      update(middle)
+      if (container.clientHeight === height) {
+        right = middle
       } else {
-        l = m
+        left = middle
       }
     }
 
     // Update the wrapper width
-    update(r * ratio + w * (1 - ratio))
+    update(right * ratio + width * (1 - ratio))
   }
 }
 
