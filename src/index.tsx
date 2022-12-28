@@ -99,7 +99,7 @@ if (!IS_SERVER && process.env.NODE_ENV !== 'production') {
 }
 
 const Balancer: React.FC<BalancerProps> = ({
-  as: Component = 'span',
+  as: Wrapper = 'span',
   ratio = 1,
   children,
   ...props
@@ -134,7 +134,7 @@ const Balancer: React.FC<BalancerProps> = ({
 
   return (
     <>
-      <Component
+      <Wrapper
         {...props}
         data-br={id}
         data-brr={ratio}
@@ -147,7 +147,7 @@ const Balancer: React.FC<BalancerProps> = ({
         suppressHydrationWarning
       >
         {children}
-      </Component>
+      </Wrapper>
       <script
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
