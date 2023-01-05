@@ -277,7 +277,7 @@ export default function () {
             If you have multiple <span className='code'>{`<Balancer>`}</span>{' '}
             components used, it’s recommended (but optional) to use{' '}
             <span className='code'>{`<Provider>`}</span> to wrap the entire app.
-            The will make them share the re-balance logic and reduce the HTML
+            This will make them share the re-balance logic and reduce the HTML
             size:
           </span>
           <code>

@@ -31,7 +31,7 @@ function Title() {
 ```
 
 If you have multiple `<Balancer>` components used, it’s recommended (but optional) to also use
-`<Provider>` to wrap the entire app. The will make them share the re-balance logic and reduce the HTML size:
+`<Provider>` to wrap the entire app. This will make them share the re-balance logic and reduce the HTML size:
 
 ```jsx
 import { Provider } from 'react-wrap-balancer'
