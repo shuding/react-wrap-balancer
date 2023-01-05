@@ -14,7 +14,7 @@ To start using the library, install it to your project:
 npm i react-wrap-balancer
 ```
 
-And wrap any text with it:
+And wrap text content with it:
 
 ```jsx
 import Balancer from 'react-wrap-balancer'
@@ -26,6 +26,23 @@ function Title() {
     <h1>
       <Balancer>My Awesome Title</Balancer>
     </h1>
+  )
+}
+```
+
+If you have multiple `<Balancer>` components used, it’s recommended (but optional) to also use
+`<Provider>` to wrap the entire app. The will make them share the re-balance logic and reduce the HTML size:
+
+```jsx
+import { Provider } from 'react-wrap-balancer'
+
+// ...
+
+function App() {
+  return (
+    <Provider>
+      <MyApp/>
+    </Provider>
   )
 }
 ```
