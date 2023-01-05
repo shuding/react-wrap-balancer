@@ -2,7 +2,8 @@
 
 import React from 'react'
 
-const SYMBOL_KEY = '__wrap_balancer'
+const SYMBOL_KEY = '__wrap_b'
+const SYMBOL_OBSERVER_KEY = '__wrap_o'
 const IS_SERVER = typeof window === 'undefined'
 const useIsomorphicLayoutEffect = IS_SERVER
   ? React.useEffect
@@ -52,9 +53,30 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
     // Update the wrapper width
     update(right * ratio + width * (1 - ratio))
   }
+
+  // Create a new observer if we don't have one.
+  // Note that we must inline the key here as we use `toString()` to serialize
+  // the function.
+  if (!wrapper['__wrap_o']) {
+    ;(wrapper['__wrap_o'] = new ResizeObserver(() => {
+      self.__wrap_b(0, +wrapper.dataset.brr, wrapper)
+    })).observe(container)
+  }
 }
 
-const MINIFIED_RELAYOUT_STR = relayout.toString()
+const RELAYOUT_STR = relayout.toString()
+
+const createScriptElement = (injected: boolean, suffix?: string) => (
+  <script
+    suppressHydrationWarning
+    dangerouslySetInnerHTML={{
+      // Calculate the balance initially for SSR
+      __html:
+        (injected ? '' : `self.${SYMBOL_KEY}=${RELAYOUT_STR};`) +
+        (suffix || ''),
+    }}
+  />
+)
 
 interface BalancerProps extends React.HTMLAttributes<HTMLElement> {
   /**
@@ -70,6 +92,74 @@ interface BalancerProps extends React.HTMLAttributes<HTMLElement> {
    */
   ratio?: number
   children?: React.ReactNode
+}
+
+/**
+ * An optional provider to inject the global relayout function, so all children
+ * Balancer components can share it.
+ */
+const BalancerContext = React.createContext<boolean>(false)
+const Provider: React.FC<{
+  children?: React.ReactNode
+}> = ({ children }) => {
+  return (
+    <BalancerContext.Provider value={true}>
+      {createScriptElement(false)}
+      {children}
+    </BalancerContext.Provider>
+  )
+}
+
+const Balancer: React.FC<BalancerProps> = ({
+  as: Wrapper = 'span',
+  ratio = 1,
+  children,
+  ...props
+}) => {
+  const id = React.useId()
+  const wrapperRef = React.useRef<HTMLElement>()
+  const hasProvider = React.useContext(BalancerContext)
+
+  // Re-balance on content change and on mount/hydration.
+  useIsomorphicLayoutEffect(() => {
+    if (wrapperRef.current) {
+      // Re-assign the function here as the component can be dynamically rendered, and script tag won't work in that case.
+      ;(self[SYMBOL_KEY] = relayout)(0, ratio, wrapperRef.current)
+    }
+  }, [children, ratio])
+
+  // Remove the observer when unmounting.
+  useIsomorphicLayoutEffect(() => {
+    return () => {
+      if (wrapperRef.current) {
+        const resizeObserver = wrapperRef.current[SYMBOL_OBSERVER_KEY]
+        if (resizeObserver) {
+          resizeObserver.disconnect()
+          delete wrapperRef.current[SYMBOL_OBSERVER_KEY]
+        }
+      }
+    }
+  }, [])
+
+  return (
+    <>
+      <Wrapper
+        {...props}
+        data-br={id}
+        data-brr={ratio}
+        ref={wrapperRef}
+        style={{
+          display: 'inline-block',
+          verticalAlign: 'top',
+          textDecoration: 'inherit',
+        }}
+        suppressHydrationWarning
+      >
+        {children}
+      </Wrapper>
+      {createScriptElement(hasProvider, `self.${SYMBOL_KEY}("${id}",${ratio})`)}
+    </>
+  )
 }
 
 // As Next.js adds `display: none` to `body` for development, we need to trigger
@@ -98,65 +188,5 @@ if (!IS_SERVER && process.env.NODE_ENV !== 'production') {
   }
 }
 
-const Balancer: React.FC<BalancerProps> = ({
-  as: Wrapper = 'span',
-  ratio = 1,
-  children,
-  ...props
-}) => {
-  const id = React.useId()
-  const wrapperRef = React.useRef<HTMLElement>()
-
-  // Re-balance on content change and on mount/hydration
-  useIsomorphicLayoutEffect(() => {
-    if (!wrapperRef.current) {
-      return
-    }
-
-    // Re-assign the function here as the component can be dynamically rendered, and script tag won't work in that case.
-    ;(self[SYMBOL_KEY] = relayout)(0, ratio, wrapperRef.current)
-  }, [children, ratio])
-
-  // Re-balance on resize
-  useIsomorphicLayoutEffect(() => {
-    if (!wrapperRef.current) return
-
-    const container = wrapperRef.current.parentElement
-    if (!container) return
-
-    const resizeObserver = new ResizeObserver(() => {
-      if (!wrapperRef.current) return
-      self[SYMBOL_KEY](0, ratio, wrapperRef.current)
-    })
-    resizeObserver.observe(container)
-    return () => resizeObserver.unobserve(container)
-  }, [])
-
-  return (
-    <>
-      <Wrapper
-        {...props}
-        data-br={id}
-        data-brr={ratio}
-        ref={wrapperRef}
-        style={{
-          display: 'inline-block',
-          verticalAlign: 'top',
-          textDecoration: 'inherit',
-        }}
-        suppressHydrationWarning
-      >
-        {children}
-      </Wrapper>
-      <script
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{
-          // Calculate the balance initially for SSR
-          __html: `self.${SYMBOL_KEY}=${MINIFIED_RELAYOUT_STR};self.${SYMBOL_KEY}("${id}",${ratio})`,
-        }}
-      />
-    </>
-  )
-}
-
 export default Balancer
+export { Provider }
