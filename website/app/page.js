@@ -295,6 +295,7 @@ export default function () {
                 layout shifts
               </a>
             </li>
+            <li>Works perfectly with web fonts</li>
             <li>
               SSR and{' '}
               <a
