@@ -72,7 +72,8 @@ const createScriptElement = (injected: boolean, suffix?: string) => (
     dangerouslySetInnerHTML={{
       // Calculate the balance initially for SSR
       __html:
-        (injected ? '' : `self.${SYMBOL_KEY}=${RELAYOUT_STR}`) + (suffix || ''),
+        (injected ? '' : `self.${SYMBOL_KEY}=${RELAYOUT_STR};`) +
+        (suffix || ''),
     }}
   />
 )
@@ -156,10 +157,7 @@ const Balancer: React.FC<BalancerProps> = ({
       >
         {children}
       </Wrapper>
-      {createScriptElement(
-        hasProvider,
-        `;self.${SYMBOL_KEY}("${id}",${ratio})`
-      )}
+      {createScriptElement(hasProvider, `self.${SYMBOL_KEY}("${id}",${ratio})`)}
     </>
   )
 }

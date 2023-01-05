@@ -287,7 +287,7 @@ export default function () {
         <div className='p'>
           <label>Features</label>
           <ul>
-            <li>0.84 kB Gzipped</li>
+            <li>0.95 kB Gzipped</li>
             <li>Fast O(log n) algorithm</li>
             <li>
               Doesn’t cause{' '}
