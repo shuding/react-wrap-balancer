@@ -9,7 +9,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.tsx"
+    "build": "tsup src/index.tsx",
+    "dev": "tsup src/index.tsx --watch",
+    "dev:website": "turbo run dev --filter=website..."
   },
   "keywords": [
     "react",
@@ -24,6 +26,7 @@
     "@types/react": "^18.0.26",
     "react": "^18.2.0",
     "tsup": "^6.4.0",
+    "turbo": "^1.6.3",
     "typescript": "^4.8.4"
   },
   "peerDependencies": {
