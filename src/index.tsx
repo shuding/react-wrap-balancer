@@ -9,10 +9,14 @@ const useIsomorphicLayoutEffect = IS_SERVER
   ? React.useEffect
   : React.useLayoutEffect
 
+interface WrapperElement extends HTMLElement {
+  [SYMBOL_OBSERVER_KEY]?: ResizeObserver | undefined
+}
+
 type RelayoutFn = (
   id: string | number,
   ratio: number,
-  wrapper?: HTMLElement
+  wrapper?: WrapperElement
 ) => void
 
 declare global {
@@ -22,7 +26,8 @@ declare global {
 }
 
 const relayout: RelayoutFn = (id, ratio, wrapper) => {
-  wrapper = wrapper || document.querySelector<HTMLElement>(`[data-br="${id}"]`)
+  wrapper =
+    wrapper || document.querySelector<WrapperElement>(`[data-br="${id}"]`)
   const container = wrapper.parentElement
 
   const update = (width: number) => (wrapper.style.maxWidth = width + 'px')
@@ -66,14 +71,12 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
 
 const RELAYOUT_STR = relayout.toString()
 
-const createScriptElement = (injected: boolean, suffix?: string) => (
+const createScriptElement = (injected: boolean, suffix: string = '') => (
   <script
     suppressHydrationWarning
     dangerouslySetInnerHTML={{
       // Calculate the balance initially for SSR
-      __html:
-        (injected ? '' : `self.${SYMBOL_KEY}=${RELAYOUT_STR};`) +
-        (suffix || ''),
+      __html: (injected ? '' : `self.${SYMBOL_KEY}=${RELAYOUT_STR};`) + suffix,
     }}
   />
 )
@@ -117,7 +120,7 @@ const Balancer: React.FC<BalancerProps> = ({
   ...props
 }) => {
   const id = React.useId()
-  const wrapperRef = React.useRef<HTMLElement>()
+  const wrapperRef = React.useRef<WrapperElement>()
   const hasProvider = React.useContext(BalancerContext)
 
   // Re-balance on content change and on mount/hydration.
@@ -131,13 +134,13 @@ const Balancer: React.FC<BalancerProps> = ({
   // Remove the observer when unmounting.
   useIsomorphicLayoutEffect(() => {
     return () => {
-      if (wrapperRef.current) {
-        const resizeObserver = wrapperRef.current[SYMBOL_OBSERVER_KEY]
-        if (resizeObserver) {
-          resizeObserver.disconnect()
-          delete wrapperRef.current[SYMBOL_OBSERVER_KEY]
-        }
-      }
+      if (!wrapperRef.current) return
+
+      const resizeObserver = wrapperRef.current[SYMBOL_OBSERVER_KEY]
+      if (!resizeObserver) return
+
+      resizeObserver.disconnect()
+      delete wrapperRef.current[SYMBOL_OBSERVER_KEY]
     }
   }, [])
 
@@ -175,7 +178,8 @@ if (!IS_SERVER && process.env.NODE_ENV !== 'production') {
           if (node !== next_dev_style) continue
 
           observer.disconnect()
-          const elements = document.querySelectorAll<HTMLElement>('[data-br]')
+          const elements =
+            document.querySelectorAll<WrapperElement>('[data-br]')
 
           for (const element of Array.from(elements)) {
             self[SYMBOL_KEY](0, +element.dataset.brr, element)
