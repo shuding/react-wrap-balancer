@@ -35,7 +35,7 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
   // Reset wrapper width
   wrapper.style.maxWidth = ''
 
-  // Get the intial container size
+  // Get the initial container size
   const width = container.clientWidth
   const height = container.clientHeight
 
