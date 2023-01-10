@@ -40,11 +40,15 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
   const height = container.clientHeight
 
   // Synchronously do binary search and calculate the layout
-  let left: number = width / 2
-  let right: number = width
+  // Since `clientWidth` is a rounded value, there could be a error of .5
+  // For correctness we add .5 to the upper bound and
+  // minus .25 from the lower bound
+  let right: number = width + .5
+  let left: number = width / 2 - .25
   let middle: number
 
   if (width) {
+    // No need to be that accurate
     while (left + 1 < right) {
       middle = ~~((left + right) / 2)
       update(middle)
