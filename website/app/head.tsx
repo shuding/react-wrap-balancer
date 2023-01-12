@@ -1,4 +1,4 @@
-export default function Head() {
+export default function Head(): JSX.Element {
   return (
     <>
       <title>React Wrap Balancer</title>

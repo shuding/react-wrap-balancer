@@ -1,0 +1,5 @@
+export { default as CopyIcon } from './Copy'
+export { default as GitHubIcon } from './GitHub'
+export { default as TooltipArrowIcon } from './TooltipArrow'
+export { default as TooltipTriggerIcon } from './TooltipTrigger'
+export { default as VercelIcon } from './Vercel'
