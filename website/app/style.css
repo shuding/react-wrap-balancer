@@ -75,8 +75,8 @@ body {
 .github-link span {
   display: inline-flex;
   align-items: center;
-  flex-shrink: 0;
   gap: 0.2em;
+  white-space: nowrap;
 }
 
 .installation {
