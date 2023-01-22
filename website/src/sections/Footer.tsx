@@ -4,14 +4,14 @@ import VercelIcon from '../icons/Vercel'
 export default function Footer() {
   return (
     <footer
-      className="headline"
+      className='headline'
       style={{
         fontSize: 20,
         marginBottom: 100,
       }}
     >
       <BlankLink
-        href="https://vercel.com"
+        href='https://vercel.com'
         style={{
           display: 'inline-flex',
           justifyContent: 'center',
@@ -22,7 +22,7 @@ export default function Footer() {
         }}
       >
         <span>Deployed on</span>
-        <VercelIcon height="1.1em" style={{ marginTop: 2 }} />
+        <VercelIcon height='1.1em' style={{ marginTop: 2 }} />
       </BlankLink>
     </footer>
   )

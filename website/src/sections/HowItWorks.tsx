@@ -7,7 +7,7 @@ import BlankLink from '../components/BlankLink'
 export default function HowItWorks() {
   return (
     <>
-      <p className="headline">
+      <p className='headline'>
         <Balancer>How Does It Work?</Balancer>
       </p>
       <p>
@@ -18,7 +18,7 @@ export default function HowItWorks() {
       </p>
       <p>
         Check out the{' '}
-        <BlankLink href="https://github.com/shuding/react-wrap-balancer">
+        <BlankLink href='https://github.com/shuding/react-wrap-balancer'>
           GitHub Repository
         </BlankLink>{' '}
         to learn more.

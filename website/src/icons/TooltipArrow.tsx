@@ -12,7 +12,7 @@ export default function TooltipArrow(svgProps: React.SVGProps<SVGSVGElement>) {
 
   return (
     <svg {...props}>
-      <polygon points="0,0 30,0 15,10" />
+      <polygon points='0,0 30,0 15,10' />
     </svg>
   )
 }
