@@ -40,23 +40,23 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
   const height = container.clientHeight
 
   // Synchronously do binary search and calculate the layout
-  let left: number = width / 2
-  let right: number = width
+  let lower: number = width / 2 - 0.25
+  let upper: number = width + 0.5
   let middle: number
 
   if (width) {
-    while (left + 1 < right) {
-      middle = ~~((left + right) / 2)
+    while (lower + 1 < upper) {
+      middle = Math.round((lower + upper) / 2)
       update(middle)
       if (container.clientHeight === height) {
-        right = middle
+        upper = middle
       } else {
-        left = middle
+        lower = middle
       }
     }
 
     // Update the wrapper width
-    update(right * ratio + width * (1 - ratio))
+    update(upper * ratio + width * (1 - ratio))
   }
 
   // Create a new observer if we don't have one.
