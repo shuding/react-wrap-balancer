@@ -11,30 +11,30 @@ import TooltipTriggerIcon from '../icons/TooltipTrigger'
 export default function UseCases() {
   return (
     <>
-      <p className="headline">
+      <p className='headline'>
         <Balancer>Use Cases</Balancer>
       </p>
       <Comparison
         a={(width) => (
-          <div className="tooltip-container">
-            <div className="TooltipContent">
+          <div className='tooltip-container'>
+            <div className='TooltipContent'>
               <animated.div style={{ width }}>
-                <div className="tooltip item">
+                <div className='tooltip item'>
                   This deployment is currently in progress. <a>Read more</a>.
                 </div>
               </animated.div>
               <TooltipArrowIcon />
             </div>
-            <div className="tooltip-trigger">
+            <div className='tooltip-trigger'>
               <TooltipTriggerIcon />
             </div>
           </div>
         )}
         b={(width) => (
-          <div className="tooltip-container">
-            <div className="TooltipContent">
+          <div className='tooltip-container'>
+            <div className='TooltipContent'>
               <animated.div style={{ width }}>
-                <div className="tooltip item">
+                <div className='tooltip item'>
                   <Balancer>
                     This deployment is currently in progress. <a>Read more</a>.
                   </Balancer>
@@ -42,7 +42,7 @@ export default function UseCases() {
               </animated.div>
               <TooltipArrowIcon />
             </div>
-            <div className="tooltip-trigger">
+            <div className='tooltip-trigger'>
               <TooltipTriggerIcon />
             </div>
           </div>
@@ -54,14 +54,14 @@ export default function UseCases() {
       <Comparison
         a={
           <Content>
-            <h2 className="item">
+            <h2 className='item'>
               第六個沉思：論物質性東西的存在；論人的靈魂和肉體之間的實在區別
             </h2>
           </Content>
         }
         b={
           <Content>
-            <h2 className="item">
+            <h2 className='item'>
               <Balancer>
                 第六個沉思：論物質性東西的存在；論人的靈魂和肉體之間的實在區別
               </Balancer>
@@ -74,7 +74,7 @@ export default function UseCases() {
       </h3>
       <Comparison
         a={
-          <blockquote className="item">
+          <blockquote className='item'>
             <span>
               You have wakened not out of sleep, but into a prior dream, and
               that dream lies within another, and so on, to infinity, which is
@@ -85,7 +85,7 @@ export default function UseCases() {
           </blockquote>
         }
         b={
-          <blockquote className="item">
+          <blockquote className='item'>
             <Balancer>
               You have wakened not out of sleep, but into a prior dream, and
               that dream lies within another, and so on, to infinity, which is

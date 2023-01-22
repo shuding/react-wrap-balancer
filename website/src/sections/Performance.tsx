@@ -7,7 +7,7 @@ import BlankLink from '../components/BlankLink'
 export default function Performance() {
   return (
     <>
-      <p className="headline">
+      <p className='headline'>
         <Balancer>Performance Impact</Balancer>
       </p>
       <p
@@ -28,18 +28,18 @@ export default function Performance() {
         }}
       >
         The following benchmark (
-        <BlankLink href="https://github.com/shuding/react-wrap-balancer/tree/main/test/benchmark">
+        <BlankLink href='https://github.com/shuding/react-wrap-balancer/tree/main/test/benchmark'>
           source
         </BlankLink>
         ) is done by measuring the script execution time of X balanced titles
         when loading the webpage (
-        <BlankLink href="https://gist.github.com/shuding/1554c7bf31efb389c9960758e9f27274">
+        <BlankLink href='https://gist.github.com/shuding/1554c7bf31efb389c9960758e9f27274'>
           raw data
         </BlankLink>
         ):
       </p>
-      <a href="/bench.svg" target="_blank" className="benchmark">
-        <img src="/bench.svg" alt="Benchmark result" />
+      <a href='/bench.svg' target='_blank' className='benchmark'>
+        <img src='/bench.svg' alt='Benchmark result' />
       </a>
       <p
         style={{

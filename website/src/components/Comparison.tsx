@@ -22,9 +22,9 @@ export default function Comparison({ a, b, align = 'left' }: ComparisonProps) {
   }
 
   return (
-    <div className="demo-container">
-      <div className="controller">
-        <input type="range" defaultValue="55" onChange={handleRange} />
+    <div className='demo-container'>
+      <div className='controller'>
+        <input type='range' defaultValue='55' onChange={handleRange} />
       </div>
 
       <ConditionalRender {...{ a, b, align, width }} />
@@ -52,7 +52,7 @@ function ConditionalRender({
     return (
       <div
         style={{ width: `calc(55% + 144px)`, textAlign: align }}
-        className="demo"
+        className='demo'
       >
         {renderAB(a(interpolation), b(interpolation))}
       </div>
@@ -64,7 +64,7 @@ function ConditionalRender({
   return (
     <animated.div
       style={{ textAlign: align, width: interpolation }}
-      className="demo"
+      className='demo'
     >
       {renderAB(a, b)}
     </animated.div>

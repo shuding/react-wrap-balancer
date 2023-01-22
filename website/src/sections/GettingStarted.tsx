@@ -18,13 +18,13 @@ function highlightedCode(
 
   for (const fade of fades) {
     elements.push(
-      <span key={i++} className="hl-fade">
+      <span key={i++} className='hl-fade'>
         {fade}
       </span>
     )
     if (highlighted.length) {
       elements.push(
-        <span key={i++} className="hl-highlighted">
+        <span key={i++} className='hl-highlighted'>
           {highlighted.shift()}
         </span>
       )
@@ -64,18 +64,18 @@ export default function GettingStarted() {
 
   return (
     <>
-      <p className="headline">
+      <p className='headline'>
         <Balancer>Getting Started</Balancer>
       </p>
       <p>
         <label>Installation</label>
         <code
-          className="installation"
+          className='installation'
           onPointerDown={handlePointerMove}
           onClick={handleCopy}
         >
           npm install react-wrap-balancer
-          <span className="copy">
+          <span className='copy'>
             <CopyIcon copying={copying > 0} />
           </span>
         </code>
@@ -84,15 +84,15 @@ export default function GettingStarted() {
         <label>Usage</label>
         <span>
           The simplest way is to wrap the text content with{' '}
-          <span className="code">{`<Balancer>`}</span>:
+          <span className='code'>{`<Balancer>`}</span>:
         </span>
         <code>
           {highlightedCode`import ${'Balancer'} from ${"'react-wrap-balancer'"}\n\n// ...\n\n<h1>\n  ${'<Balancer>My Title</Balancer>'}\n</h1>`}
         </code>
         <span>
-          If you have multiple <span className="code">{`<Balancer>`}</span>{' '}
+          If you have multiple <span className='code'>{`<Balancer>`}</span>{' '}
           components used, it&rsquo;s recommended (but optional) to use{' '}
-          <span className="code">{`<Provider>`}</span> to wrap the entire app.
+          <span className='code'>{`<Provider>`}</span> to wrap the entire app.
           This will make them share the re-balance logic and reduce the HTML
           size:
         </span>
@@ -100,25 +100,25 @@ export default function GettingStarted() {
           {highlightedCode`import { ${'Provider'} } from ${"'react-wrap-balancer'"}\n\n// ...\n\n${'<Provider>'}\n  <App/>\n${'</Provider>'}`}
         </code>
       </p>
-      <div className="p">
+      <div className='p'>
         <label>Features</label>
         <ul>
           <li>0.95 kB Gzipped</li>
           <li>Fast O(log n) algorithm</li>
           <li>
             Doesn&rsquo;t cause{' '}
-            <BlankLink href="https://web.dev/cls/">layout shifts</BlankLink>
+            <BlankLink href='https://web.dev/cls/'>layout shifts</BlankLink>
           </li>
           <li>Works perfectly with web fonts</li>
           <li>
             SSR and{' '}
-            <BlankLink href="https://beta.nextjs.org/docs/data-fetching/streaming-and-suspense">
+            <BlankLink href='https://beta.nextjs.org/docs/data-fetching/streaming-and-suspense'>
               streaming SSR
             </BlankLink>{' '}
             supported
           </li>
           <li>
-            <BlankLink href="https://beta.nextjs.org/docs/rendering/server-and-client-components">
+            <BlankLink href='https://beta.nextjs.org/docs/rendering/server-and-client-components'>
               Next.js 13 app directory and React Server Components
             </BlankLink>{' '}
             compatible
@@ -131,12 +131,12 @@ export default function GettingStarted() {
       </p>
       <p>
         <BlankLink
-          href="https://github.com/shuding/react-wrap-balancer"
-          className="github-link"
+          href='https://github.com/shuding/react-wrap-balancer'
+          className='github-link'
         >
           <span>View project on</span>
           <span>
-            <GitHubIcon height="1.1em" />
+            <GitHubIcon height='1.1em' />
             GitHub
           </span>
         </BlankLink>

@@ -22,14 +22,14 @@ export default function CustomBalanceRatio() {
 
   return (
     <>
-      <p className="headline">
+      <p className='headline'>
         <Balancer>Custom Balance Ratio</Balancer>
       </p>
-      <div className="demo-container">
-        <div className="controller">
-          <input type="range" defaultValue="65" onChange={handleRange} />
+      <div className='demo-container'>
+        <div className='controller'>
+          <input type='range' defaultValue='65' onChange={handleRange} />
         </div>
-        <div className="demo" style={{ width: 480, maxWidth: '100%' }}>
+        <div className='demo' style={{ width: 480, maxWidth: '100%' }}>
           <div
             style={{
               textAlign: 'center',
@@ -37,12 +37,12 @@ export default function CustomBalanceRatio() {
             }}
           >
             <div>
-              <h2 className="ratio-ruler">
+              <h2 className='ratio-ruler'>
                 <Balancer>
                   <span>The quick brown fox jumps over the lazy dog</span>
                 </Balancer>
               </h2>
-              <h2 className="ratio-title">
+              <h2 className='ratio-title'>
                 <Balancer ratio={currentRatio}>
                   The quick brown fox jumps over the lazy dog
                 </Balancer>
@@ -55,8 +55,8 @@ export default function CustomBalanceRatio() {
       <h3>
         <Balancer>
           Adjust the balance ratio to a custom value between{' '}
-          <span className="code">0</span> (loose) and{' '}
-          <span className="code">1</span> (compact, the default)
+          <span className='code'>0</span> (loose) and{' '}
+          <span className='code'>1</span> (compact, the default)
         </Balancer>
       </h3>
     </>

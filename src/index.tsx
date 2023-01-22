@@ -144,6 +144,28 @@ const Balancer: React.FC<BalancerProps> = ({
     }
   }, [])
 
+  if (process.env.NODE_ENV === 'development') {
+    // In development, we check `children`'s type to ensure we are not wrapping
+    // elements like <p> or <h1> inside. Instead <Balancer> should directly
+    // wrap text nodes.
+    if (children && !Array.isArray(children) && typeof children === 'object') {
+      if (
+        'type' in children &&
+        typeof children.type === 'string' &&
+        children.type !== 'span'
+      ) {
+        console.warn(
+          `<Balancer> should not wrap <${children.type}> inside. Instead, it should directly wrap text or inline nodes.
+
+Try changing this:
+  <Balancer><${children.type}>content</${children.type}></Balancer>
+To:
+  <${children.type}><Balancer>content</Balancer></${children.type}>`
+        )
+      }
+    }
+  }
+
   return (
     <>
       <Wrapper

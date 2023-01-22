@@ -2,9 +2,9 @@ import React from 'react'
 
 const content = (
   <>
-    <div className="skeleton" style={{ '--w': '60%' }} />
-    <div className="skeleton" style={{ '--w': '80%' }} />
-    <div className="skeleton" style={{ '--w': '75%' }} />
+    <div className='skeleton' style={{ '--w': '60%' }} />
+    <div className='skeleton' style={{ '--w': '80%' }} />
+    <div className='skeleton' style={{ '--w': '75%' }} />
   </>
 )
 
