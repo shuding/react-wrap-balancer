@@ -43,7 +43,7 @@ export default function CustomBalanceRatio() {
                 </Balancer>
               </h2>
               <h2 className='ratio-title'>
-                <Balancer ratio={currentRatio}>
+                <Balancer ratio={currentRatio} maxScale={2}>
                   The quick brown fox jumps over the lazy dog
                 </Balancer>
               </h2>
