@@ -146,7 +146,7 @@ const Balancer: React.FC<BalancerProps> = ({
       // Re-assign the function here as the component can be dynamically rendered, and script tag won't work in that case.
       ;(self[SYMBOL_KEY] = relayout)(0, ratio, maxScale, wrapperRef.current)
     }
-  }, [children, ratio])
+  }, [children, ratio, maxScale])
 
   // Remove the observer when unmounting.
   useIsomorphicLayoutEffect(() => {

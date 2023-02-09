@@ -12,6 +12,7 @@ export default function HomePage() {
         <Section.Hero />
         <Section.GettingStarted />
         <Section.CustomBalanceRatio />
+        <Section.CustomMaxScale />
         <Section.HowItWorks />
         <Section.UseCases />
         <Section.Performance />

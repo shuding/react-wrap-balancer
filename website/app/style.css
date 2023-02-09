@@ -400,14 +400,16 @@ ul {
   padding-left: 18px;
 }
 
-h2.ratio-title {
+h2.ratio-title,
+h2.scale-title {
   position: relative;
   margin-bottom: 1em;
   background: #fff2e0;
   border-right: 1px dashed #c59759;
   border-left: 1px dashed #c59759;
 }
-h2.ratio-title span {
+h2.ratio-title span,
+h2.scale-title span {
   background: #cdebff;
 }
 h2.ratio-title:after,
