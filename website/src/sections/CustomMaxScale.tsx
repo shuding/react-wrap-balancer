@@ -5,18 +5,18 @@ import { useState } from 'react'
 import Balancer from 'react-wrap-balancer'
 
 export default function CustomMaxScale() {
-  const [ratio, setRatio] = useState<number>(1.5)
-  const [currentRatio, setCurrentRatio] = useState<number>(1.5)
+  const [scale, setScale] = useState<number>(1.5)
+  const [currentScale, setCurrentScale] = useState<number>(1.5)
 
   const handleRange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    setRatio(+event.target.value / 100 + 1)
+    setScale(+event.target.value / 100 + 1)
   }
 
   useSpring({
     from: { r: 1.5 },
-    to: { r: ratio },
+    to: { r: scale },
     onChange(prop) {
-      setCurrentRatio(prop.value.r)
+      setCurrentScale(prop.value.r)
     },
   })
 
@@ -38,11 +38,11 @@ export default function CustomMaxScale() {
           >
             <div>
               <h2 className='scale-title'>
-                <Balancer maxScale={currentRatio}>
+                <Balancer maxScale={currentScale}>
                   The quick brown fox jumps over the lazy dog
                 </Balancer>
               </h2>
-              <code>{`<Balancer maxScale={${ratio.toFixed(2)}}>`}</code>
+              <code>{`<Balancer maxScale={${scale.toFixed(2)}}>`}</code>
             </div>
           </div>
         </div>
