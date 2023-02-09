@@ -33,8 +33,9 @@ const relayout: RelayoutFn = (id, ratio, maxScale, wrapper) => {
 
   const update = (width: number) => (wrapper.style.maxWidth = width + 'px')
 
-  // Reset wrapper width
+  // Reset wrapper width & scale
   wrapper.style.maxWidth = ''
+  wrapper.style.fontSize = ''
 
   // Get the initial container size
   const width = container.clientWidth
@@ -57,7 +58,16 @@ const relayout: RelayoutFn = (id, ratio, maxScale, wrapper) => {
     }
 
     // Update the wrapper width
-    update(upper * ratio + width * (1 - ratio))
+    let maxWidth = upper * ratio + width * (1 - ratio)
+
+    // Update the font scale
+    if (maxScale > 1 && maxWidth + 1 < width) {
+      const scale = Math.min(maxScale, width / (maxWidth + 1))
+      wrapper.style.fontSize = scale + 'em'
+      maxWidth *= scale
+    }
+
+    update(maxWidth)
   }
 
   // Create a new observer if we don't have one.
