@@ -49,6 +49,32 @@ function App() {
 
 For full documentation and use cases, please visit [**react-wrap-balancer.vercel.app**](https://react-wrap-balancer.vercel.app).
 
+## Browser Support Information
+Desktop:
+
+| Browser | Min Version |
+|:-------:|:-----------:|
+| Chrome  |     64      |
+|  Edge   |     79      |
+| Safari  |    13.1     |
+| FireFox |     69      |
+|  Opera  |     51      |
+|   IE    | Not Support |
+
+Mobile:
+
+|     Browser     | Min Version |
+|:---------------:|:-----------:|
+|     Chrome      |     64      |
+|     Safari      |    13.4     |
+|     Firefox     |     69      |
+|      Opera      |     47      |
+| WebView Android |     64      |
+
+Cross-browser compatibility issues are mainly due to the fact that lib uses the ResizeObserver API, more information about this API can be found at this [link](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver).
+
+If you are using browser which version is lower than versions in table, please consider add polyfill for this API or upgrade your browser.
+
 ## About
 
 This project was inspired by Adobe’s [balance-text](https://github.com/adobe/balance-text) project, NYT’s [text-balancer](https://github.com/nytimes/text-balancer) project, and Daniel Aleksandersen’s [Improving the New York Times’ line wrap balancer](https://www.ctrl.blog/entry/text-wrap-balance.html). If you want to learn more, you can also take a look at the [text-wrap: balance](https://drafts.csswg.org/css-text-4/#text-wrap) proposal.
