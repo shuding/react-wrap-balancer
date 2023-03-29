@@ -1,5 +1,6 @@
 import { default as About } from './About'
 import { default as CustomBalanceRatio } from './CustomBalanceRatio'
+import { default as CustomMaxScale } from './CustomMaxScale'
 import { default as GettingStarted } from './GettingStarted'
 import { default as Header } from './Header'
 import { default as Footer } from './Footer'
@@ -10,6 +11,7 @@ import { default as UseCases } from './UseCases'
 export {
   About,
   CustomBalanceRatio,
+  CustomMaxScale,
   GettingStarted,
   Header,
   Footer,
@@ -21,6 +23,7 @@ export {
 const Sections = {
   About,
   CustomBalanceRatio,
+  CustomMaxScale,
   GettingStarted,
   Header,
   Footer,

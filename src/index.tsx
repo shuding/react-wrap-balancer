@@ -16,6 +16,7 @@ interface WrapperElement extends HTMLElement {
 type RelayoutFn = (
   id: string | number,
   ratio: number,
+  maxScale: number,
   wrapper?: WrapperElement
 ) => void
 
@@ -25,15 +26,16 @@ declare global {
   }
 }
 
-const relayout: RelayoutFn = (id, ratio, wrapper) => {
+const relayout: RelayoutFn = (id, ratio, maxScale, wrapper) => {
   wrapper =
     wrapper || document.querySelector<WrapperElement>(`[data-br="${id}"]`)
   const container = wrapper.parentElement
 
   const update = (width: number) => (wrapper.style.maxWidth = width + 'px')
 
-  // Reset wrapper width
+  // Reset wrapper width & scale
   wrapper.style.maxWidth = ''
+  wrapper.style.fontSize = ''
 
   // Get the initial container size
   const width = container.clientWidth
@@ -56,7 +58,16 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
     }
 
     // Update the wrapper width
-    update(upper * ratio + width * (1 - ratio))
+    let maxWidth = upper * ratio + width * (1 - ratio)
+
+    // Update the font scale
+    if (maxScale > 1 && maxWidth + 1 < width) {
+      const scale = Math.min(maxScale, width / (maxWidth + 1))
+      wrapper.style.fontSize = scale + 'em'
+      maxWidth *= scale
+    }
+
+    update(maxWidth)
   }
 
   // Create a new observer if we don't have one.
@@ -64,7 +75,7 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
   // the function.
   if (!wrapper['__wrap_o']) {
     ;(wrapper['__wrap_o'] = new ResizeObserver(() => {
-      self.__wrap_b(0, +wrapper.dataset.brr, wrapper)
+      self.__wrap_b(0, +wrapper.dataset.brr, +wrapper.dataset.brs, wrapper)
     })).observe(container)
   }
 }
@@ -94,6 +105,11 @@ interface BalancerProps extends React.HTMLAttributes<HTMLElement> {
    * @default 1
    */
   ratio?: number
+  /**
+   * The maximum scale to apply to the font-size to fit the container width.
+   * @default 1
+   */
+  maxScale?: number
   children?: React.ReactNode
 }
 
@@ -116,6 +132,7 @@ const Provider: React.FC<{
 const Balancer: React.FC<BalancerProps> = ({
   as: Wrapper = 'span',
   ratio = 1,
+  maxScale = 1,
   children,
   ...props
 }) => {
@@ -127,9 +144,9 @@ const Balancer: React.FC<BalancerProps> = ({
   useIsomorphicLayoutEffect(() => {
     if (wrapperRef.current) {
       // Re-assign the function here as the component can be dynamically rendered, and script tag won't work in that case.
-      ;(self[SYMBOL_KEY] = relayout)(0, ratio, wrapperRef.current)
+      ;(self[SYMBOL_KEY] = relayout)(0, ratio, maxScale, wrapperRef.current)
     }
-  }, [children, ratio])
+  }, [children, ratio, maxScale])
 
   // Remove the observer when unmounting.
   useIsomorphicLayoutEffect(() => {
@@ -172,6 +189,7 @@ To:
         {...props}
         data-br={id}
         data-brr={ratio}
+        data-brs={maxScale}
         ref={wrapperRef}
         style={{
           display: 'inline-block',
@@ -204,7 +222,7 @@ if (!IS_SERVER && process.env.NODE_ENV !== 'production') {
             document.querySelectorAll<WrapperElement>('[data-br]')
 
           for (const element of Array.from(elements)) {
-            self[SYMBOL_KEY](0, +element.dataset.brr, element)
+            self[SYMBOL_KEY](0, +element.dataset.brr, +element.dataset.brs, element)
           }
         }
       }
