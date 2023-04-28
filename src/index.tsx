@@ -63,7 +63,7 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
   // Note that we must inline the key here as we use `toString()` to serialize
   // the function.
   if (!wrapper['__wrap_o']) {
-    if (ResizeObserver) {
+    if (typeof ResizeObserver !== 'undefined') {
       ;(wrapper['__wrap_o'] = new ResizeObserver(() => {
         self.__wrap_b(0, +wrapper.dataset.brr, wrapper)
       })).observe(container)
