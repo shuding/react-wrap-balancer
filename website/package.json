@@ -14,6 +14,7 @@
   "dependencies": {
     "@next/font": "^13.1.1",
     "@react-spring/web": "^9.5.5",
+    "@vercel/analytics": "^1.0.0",
     "clsx": "^1.2.1",
     "copy-to-clipboard": "^3.3.3",
     "next": "13.1.1",

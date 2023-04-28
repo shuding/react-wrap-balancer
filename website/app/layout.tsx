@@ -1,4 +1,5 @@
 import { Inter, Alice } from '@next/font/google'
+import { Analytics } from '@vercel/analytics/react'
 import React from 'react'
 import clsx from 'clsx'
 import './style.css'
@@ -27,7 +28,10 @@ export default function RootLayout({ children }: LayoutProps): JSX.Element {
   return (
     <html>
       <head />
-      <body className={bodyClassName}>{children}</body>
+      <body className={bodyClassName}>
+        {children}
+        <Analytics />
+      </body>
     </html>
   )
 }

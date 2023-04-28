@@ -24,6 +24,7 @@ importers:
       '@react-spring/web': ^9.5.5
       '@types/react': ^18.0.26
       '@types/react-dom': ^18.0.10
+      '@vercel/analytics': ^1.0.0
       clsx: ^1.2.1
       copy-to-clipboard: ^3.3.3
       csstype: ^3.1.1
@@ -35,6 +36,7 @@ importers:
     dependencies:
       '@next/font': 13.1.1
       '@react-spring/web': 9.5.5_biqbaboplfbrettd7655fr4n2y
+      '@vercel/analytics': 1.0.0_react@18.2.0
       clsx: 1.2.1
       copy-to-clipboard: 3.3.3
       next: 13.1.1_biqbaboplfbrettd7655fr4n2y
@@ -298,6 +300,14 @@ packages:
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
     dev: true
+
+  /@vercel/analytics/1.0.0_react@18.2.0:
+    resolution: {integrity: sha512-RQmj7pv82JwGDHrnKeRc6TtSw2U7rWNubc2IH0ernTzWTj02yr9zvIYiYJeztsBzrJtWv7m8Nz6vxxb+cdEtJw==}
+    peerDependencies:
+      react: ^16.8||^17||^18
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /any-promise/1.3.0:
     resolution: {integrity: sha512-7UvmKalWRt1wgjL1RrGxoSJW/0QZFIegpeGvZG9kjp8vrRu55XTHbwnqq2GpXm9uLbcuhxm3IqX9OB4MZR1b2A==}
