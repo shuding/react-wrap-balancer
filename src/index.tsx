@@ -63,9 +63,20 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
   // Note that we must inline the key here as we use `toString()` to serialize
   // the function.
   if (!wrapper['__wrap_o']) {
-    ;(wrapper['__wrap_o'] = new ResizeObserver(() => {
-      self.__wrap_b(0, +wrapper.dataset.brr, wrapper)
-    })).observe(container)
+    if (ResizeObserver) {
+      ;(wrapper['__wrap_o'] = new ResizeObserver(() => {
+        self.__wrap_b(0, +wrapper.dataset.brr, wrapper)
+      })).observe(container)
+    } else {
+      // Silently ignore ResizeObserver for production builds
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(
+          'The browser you are using does not support the ResizeObserver API. ' +
+          'Please consider add polyfill for this API to avoid potential layout shifts or upgrade your browser. ' +
+          'Read more: https://github.com/shuding/react-wrap-balancer#browser-support-information'
+        )
+      }
+    }
   }
 }
 
