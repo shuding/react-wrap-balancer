@@ -92,21 +92,25 @@ const createScriptElement = (injected: boolean, suffix: string = '') => (
   />
 )
 
-interface BalancerProps extends React.HTMLAttributes<HTMLElement> {
-  /**
-   * The HTML tag to use for the wrapper element.
-   * @default 'span'
-   */
-  as?: React.ElementType
-  /**
-   * The balance ratio of the wrapper width (0 <= ratio <= 1).
-   * 0 means the wrapper width is the same as the container width (no balance, browser default).
-   * 1 means the wrapper width is the minimum (full balance, most compact).
-   * @default 1
-   */
-  ratio?: number
-  children?: React.ReactNode
+interface BalancerOwnProps<ElementType extends React.ElementType = React.ElementType>
+	extends React.HTMLAttributes<HTMLElement> {
+	/**
+	 * The HTML tag to use for the wrapper element.
+	 * @default 'span'
+	 */
+	as?: ElementType
+	/**
+	 * The balance ratio of the wrapper width (0 <= ratio <= 1).
+	 * 0 means the wrapper width is the same as the container width (no balance, browser default).
+	 * 1 means the wrapper width is the minimum (full balance, most compact).
+	 * @default 1
+	 */
+	ratio?: number
+	children?: React.ReactNode
 }
+
+type BalancerProps<ElementType extends React.ElementType> = BalancerOwnProps<ElementType> &
+	Omit<React.ComponentPropsWithoutRef<ElementType>, keyof BalancerOwnProps>
 
 /**
  * An optional provider to inject the global relayout function, so all children
@@ -124,15 +128,15 @@ const Provider: React.FC<{
   )
 }
 
-const Balancer: React.FC<BalancerProps> = ({
-  as: Wrapper = 'span',
+const Balancer = <ElementType extends React.ElementType = React.ElementType>({
   ratio = 1,
   children,
   ...props
-}) => {
+}: BalancerProps<ElementType>) => {
   const id = React.useId()
   const wrapperRef = React.useRef<WrapperElement>()
   const hasProvider = React.useContext(BalancerContext)
+  const Wrapper: React.ElementType = props.as || 'span';
 
   // Re-balance on content change and on mount/hydration.
   useIsomorphicLayoutEffect(() => {
