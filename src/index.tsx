@@ -82,14 +82,19 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
 
 const RELAYOUT_STR = relayout.toString()
 
-const createScriptElement = (injected: boolean, suffix: string = '') => (
-  <script
-    suppressHydrationWarning
-    dangerouslySetInnerHTML={{
-      // Calculate the balance initially for SSR
-      __html: (injected ? '' : `self.${SYMBOL_KEY}=${RELAYOUT_STR};`) + suffix,
-    }}
-  />
+const createScriptElement = (
+	injected: boolean,
+	nonce?: string,
+	suffix: string = ""
+) => (
+	<script
+		suppressHydrationWarning
+		dangerouslySetInnerHTML={{
+			// Calculate the balance initially for SSR
+			__html: (injected ? "" : `self.${SYMBOL_KEY}=${RELAYOUT_STR};`) + suffix,
+		}}
+		nonce={nonce}
+	/>
 )
 
 interface BalancerOwnProps<ElementType extends React.ElementType = React.ElementType>
@@ -106,6 +111,10 @@ interface BalancerOwnProps<ElementType extends React.ElementType = React.Element
 	 * @default 1
 	 */
 	ratio?: number
+	/**
+	 * The nonce attribute to allowlist inline script injection by the component
+	 */
+	nonce?: string
 	children?: React.ReactNode
 }
 
@@ -118,11 +127,15 @@ type BalancerProps<ElementType extends React.ElementType> = BalancerOwnProps<Ele
  */
 const BalancerContext = React.createContext<boolean>(false)
 const Provider: React.FC<{
+  /**
+	 * The nonce attribute to allowlist inline script injection by the component
+	 */
+  nonce?: string
   children?: React.ReactNode
-}> = ({ children }) => {
+}> = ({ nonce, children }) => {
   return (
     <BalancerContext.Provider value={true}>
-      {createScriptElement(false)}
+      {createScriptElement(false, nonce)}
       {children}
     </BalancerContext.Provider>
   )
@@ -130,6 +143,7 @@ const Provider: React.FC<{
 
 const Balancer = <ElementType extends React.ElementType = React.ElementType>({
   ratio = 1,
+  nonce,
   children,
   ...props
 }: BalancerProps<ElementType>) => {
@@ -197,7 +211,11 @@ To:
       >
         {children}
       </Wrapper>
-      {createScriptElement(hasProvider, `self.${SYMBOL_KEY}("${id}",${ratio})`)}
+      {createScriptElement(
+				hasProvider,
+				nonce,
+				`self.${SYMBOL_KEY}("${id}",${ratio})`
+			)}
     </>
   )
 }
