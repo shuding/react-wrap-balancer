@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { useId } from './id/useId'
 
 const SYMBOL_KEY = '__wrap_b'
 const SYMBOL_OBSERVER_KEY = '__wrap_o'
@@ -151,7 +152,7 @@ const Balancer = <ElementType extends React.ElementType = React.ElementType>({
   children,
   ...props
 }: BalancerProps<ElementType>) => {
-  const id = React.useId()
+  const id = useId()
   const wrapperRef = React.useRef<WrapperElement>()
   const hasProvider = React.useContext(BalancerContext)
   const Wrapper: React.ElementType = props.as || 'span';

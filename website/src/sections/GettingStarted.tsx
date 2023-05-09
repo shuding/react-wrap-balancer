@@ -127,7 +127,7 @@ export default function GettingStarted() {
       </div>
       <p>
         <label>Requirements</label>
-        This library requires React ≥ 18.0.0, and IE 11 is not supported.
+        This library requires React ≥ 16.8.0, and IE 11 is not supported.
       </p>
       <p>
         <BlankLink
