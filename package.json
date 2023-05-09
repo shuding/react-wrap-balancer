@@ -1,7 +1,7 @@
 {
   "name": "react-wrap-balancer",
-  "version": "0.4.1",
-  "description": "Better text wrapping.",
+  "version": "0.5.0",
+  "description": "Simple React component that makes titles more readable.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
