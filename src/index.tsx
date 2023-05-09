@@ -234,4 +234,4 @@ if (!IS_SERVER && process.env.NODE_ENV !== 'production') {
 }
 
 export default Balancer
-export { Provider }
+export { Provider, Balancer }
