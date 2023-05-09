@@ -1,35 +1,30 @@
-import React from "react";
-import { useState } from "react";
+import React from 'react'
 
-const IS_SERVER = typeof window === "undefined";
-const useIsomorphicLayoutEffect = IS_SERVER
+export const IS_SERVER = typeof window === 'undefined'
+export const useIsomorphicLayoutEffect = IS_SERVER
   ? React.useEffect
-  : React.useLayoutEffect;
+  : React.useLayoutEffect
 
-let ID = 0;
-const genId = () => {
-  ID += 1;
-  return ID;
-};
-let serverHandoffComplete = false;
+let ID = 0
+const genId = () => ++ID
+let serverHandoffComplete = false
 
 function useIdPolyfill() {
-  const [id, setId] = useState(serverHandoffComplete ? genId : undefined);
+  const [id, setId] = React.useState(serverHandoffComplete ? genId : undefined)
 
   useIsomorphicLayoutEffect(() => {
     if (id === undefined) {
-      ID += 1;
-      setId(ID);
+      setId(++ID)
     }
 
-    serverHandoffComplete = true;
-  }, []);
+    serverHandoffComplete = true
+  }, [])
 
   if (id === undefined) {
-    return id;
+    return id
   }
 
-  return `rwb-${id.toString(32)}`;
+  return `rwb-${id.toString(32)}`
 }
 
 /**
@@ -45,9 +40,9 @@ function useIdPolyfill() {
  */
 export function useId() {
   const implementation = React.useMemo((): (() => string | number) => {
-    if ("useId" in React) return React.useId;
-    return useIdPolyfill;
-  }, []);
+    if ('useId' in React) return React.useId
+    return useIdPolyfill
+  }, [])
 
-  return implementation();
+  return implementation()
 }

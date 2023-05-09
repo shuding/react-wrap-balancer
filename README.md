@@ -30,6 +30,16 @@ function Title() {
 }
 ```
 
+### `<Balancer>`
+
+`<Balancer>` is the main component of the library. It will automatically balance the text content inside it. It accepts the following props:
+
+- **`as`** (_optional_): The HTML tag to be used to wrap the text content. Default to `span`.
+- **`ratio`** (_optional_): The ratio of “balance-ness”, 0 <= ratio <= 1. Default to `1`.
+- **`nonce`** (_optional_): The [nonce](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) attribute to allowlist inline script injection by the component.
+
+### `<Provider>`
+
 If you have multiple `<Balancer>` components used, it’s recommended (but optional) to also use
 `<Provider>` to wrap the entire app. This will make them share the re-balance logic and reduce the HTML size:
 
