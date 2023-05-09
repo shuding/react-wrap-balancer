@@ -1,14 +1,10 @@
 'use client'
 
 import React from 'react'
-import { useId } from './id/useId'
+import { useId, IS_SERVER, useIsomorphicLayoutEffect } from './utils'
 
 const SYMBOL_KEY = '__wrap_b'
 const SYMBOL_OBSERVER_KEY = '__wrap_o'
-const IS_SERVER = typeof window === 'undefined'
-const useIsomorphicLayoutEffect = IS_SERVER
-  ? React.useEffect
-  : React.useLayoutEffect
 
 interface WrapperElement extends HTMLElement {
   [SYMBOL_OBSERVER_KEY]?: ResizeObserver | undefined
@@ -77,8 +73,8 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
       if (process.env.NODE_ENV === 'development') {
         console.warn(
           'The browser you are using does not support the ResizeObserver API. ' +
-          'Please consider add polyfill for this API to avoid potential layout shifts or upgrade your browser. ' +
-          'Read more: https://github.com/shuding/react-wrap-balancer#browser-support-information'
+            'Please consider add polyfill for this API to avoid potential layout shifts or upgrade your browser. ' +
+            'Read more: https://github.com/shuding/react-wrap-balancer#browser-support-information'
         )
       }
     }
@@ -88,43 +84,45 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
 const RELAYOUT_STR = relayout.toString()
 
 const createScriptElement = (
-	injected: boolean,
-	nonce?: string,
-	suffix: string = ""
+  injected: boolean,
+  nonce?: string,
+  suffix: string = ''
 ) => (
-	<script
-		suppressHydrationWarning
-		dangerouslySetInnerHTML={{
-			// Calculate the balance initially for SSR
-			__html: (injected ? "" : `self.${SYMBOL_KEY}=${RELAYOUT_STR};`) + suffix,
-		}}
-		nonce={nonce}
-	/>
+  <script
+    suppressHydrationWarning
+    dangerouslySetInnerHTML={{
+      // Calculate the balance initially for SSR
+      __html: (injected ? '' : `self.${SYMBOL_KEY}=${RELAYOUT_STR};`) + suffix,
+    }}
+    nonce={nonce}
+  />
 )
 
-interface BalancerOwnProps<ElementType extends React.ElementType = React.ElementType>
-	extends React.HTMLAttributes<HTMLElement> {
-	/**
-	 * The HTML tag to use for the wrapper element.
-	 * @default 'span'
-	 */
-	as?: ElementType
-	/**
-	 * The balance ratio of the wrapper width (0 <= ratio <= 1).
-	 * 0 means the wrapper width is the same as the container width (no balance, browser default).
-	 * 1 means the wrapper width is the minimum (full balance, most compact).
-	 * @default 1
-	 */
-	ratio?: number
-	/**
-	 * The nonce attribute to allowlist inline script injection by the component
-	 */
-	nonce?: string
-	children?: React.ReactNode
+interface BalancerOwnProps<
+  ElementType extends React.ElementType = React.ElementType
+> extends React.HTMLAttributes<HTMLElement> {
+  /**
+   * The HTML tag to use for the wrapper element.
+   * @default 'span'
+   */
+  as?: ElementType
+  /**
+   * The balance ratio of the wrapper width (0 <= ratio <= 1).
+   * 0 means the wrapper width is the same as the container width (no balance, browser default).
+   * 1 means the wrapper width is the minimum (full balance, most compact).
+   * @default 1
+   */
+  ratio?: number
+  /**
+   * The nonce attribute to allowlist inline script injection by the component.
+   */
+  nonce?: string
+  children?: React.ReactNode
 }
 
-type BalancerProps<ElementType extends React.ElementType> = BalancerOwnProps<ElementType> &
-	Omit<React.ComponentPropsWithoutRef<ElementType>, keyof BalancerOwnProps>
+type BalancerProps<ElementType extends React.ElementType> =
+  BalancerOwnProps<ElementType> &
+    Omit<React.ComponentPropsWithoutRef<ElementType>, keyof BalancerOwnProps>
 
 /**
  * An optional provider to inject the global relayout function, so all children
@@ -133,8 +131,8 @@ type BalancerProps<ElementType extends React.ElementType> = BalancerOwnProps<Ele
 const BalancerContext = React.createContext<boolean>(false)
 const Provider: React.FC<{
   /**
-	 * The nonce attribute to allowlist inline script injection by the component
-	 */
+   * The nonce attribute to allowlist inline script injection by the component
+   */
   nonce?: string
   children?: React.ReactNode
 }> = ({ nonce, children }) => {
@@ -155,7 +153,7 @@ const Balancer = <ElementType extends React.ElementType = React.ElementType>({
   const id = useId()
   const wrapperRef = React.useRef<WrapperElement>()
   const hasProvider = React.useContext(BalancerContext)
-  const Wrapper: React.ElementType = props.as || 'span';
+  const Wrapper: React.ElementType = props.as || 'span'
 
   // Re-balance on content change and on mount/hydration.
   useIsomorphicLayoutEffect(() => {
@@ -217,10 +215,10 @@ To:
         {children}
       </Wrapper>
       {createScriptElement(
-				hasProvider,
-				nonce,
-				`self.${SYMBOL_KEY}("${id}",${ratio})`
-			)}
+        hasProvider,
+        nonce,
+        `self.${SYMBOL_KEY}("${id}",${ratio})`
+      )}
     </>
   )
 }
