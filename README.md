@@ -59,7 +59,7 @@ Desktop:
 | Safari  |    13.1     |
 | FireFox |     69      |
 |  Opera  |     51      |
-|   IE    | Not Support |
+|   IE    | No Support  |
 
 Mobile:
 
@@ -71,9 +71,9 @@ Mobile:
 |      Opera      |     47      |
 | WebView Android |     64      |
 
-Cross-browser compatibility issues are mainly due to the fact that lib uses the ResizeObserver API, more information about this API can be found at this [link](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver).
+Cross-browser compatibility issues are mainly due to the fact that lib uses the ResizeObserver API. More information about this API can be found at this [link](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver).
 
-If you are using browser which version is lower than versions in table, please consider add polyfill for this API or upgrade your browser.
+If you are using a browser which version is lower than the versions in the table, please consider adding polyfill for this API or upgrade your browser.
 
 ## About
 
