@@ -45,6 +45,10 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
   let middle: number
 
   if (width) {
+    // Ensure we don't search widths lower than when the text overflows
+    update(lower)
+    lower = Math.max(wrapper.scrollWidth, lower)
+
     while (lower + 1 < upper) {
       middle = Math.round((lower + upper) / 2)
       update(middle)
