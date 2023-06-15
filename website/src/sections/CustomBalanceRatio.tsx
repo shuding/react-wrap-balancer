@@ -3,6 +3,7 @@
 import { useSpring } from '@react-spring/web'
 import { useState } from 'react'
 import Balancer from 'react-wrap-balancer'
+import { BlankLink } from '../components'
 
 export default function CustomBalanceRatio() {
   const [ratio, setRatio] = useState<number>(0.65)
@@ -59,6 +60,36 @@ export default function CustomBalanceRatio() {
           <span className='code'>1</span> (compact, the default)
         </Balancer>
       </h3>
+      <p
+        style={{
+          position: 'relative',
+        }}
+      >
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          viewBox='0 0 24 24'
+          fill='#363636'
+          width={18}
+          style={{
+            position: 'absolute',
+            right: '100%',
+            marginTop: 4,
+            marginRight: 5,
+          }}
+        >
+          <path
+            fillRule='evenodd'
+            d='M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z'
+            clipRule='evenodd'
+          />
+        </svg>
+        Note that if the native CSS balance (
+        <BlankLink href='https://developer.chrome.com/blog/css-text-wrap-balance/'>
+          text-wrap: balance
+        </BlankLink>
+        ) is available, React Wrap Balancer will use it instead. And the `ratio`
+        option will be ignored in that case.
+      </p>
     </>
   )
 }
