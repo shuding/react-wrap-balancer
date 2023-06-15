@@ -103,7 +103,7 @@ export default function GettingStarted() {
       <div className='p'>
         <label>Features</label>
         <ul>
-          <li>0.95 kB Gzipped</li>
+          <li>1 kB Gzipped</li>
           <li>Fast O(log n) algorithm</li>
           <li>
             Doesn&rsquo;t cause{' '}
@@ -116,6 +116,13 @@ export default function GettingStarted() {
               streaming SSR
             </BlankLink>{' '}
             supported
+          </li>
+          <li>
+            Switches to native CSS{' '}
+            <BlankLink href='https://developer.chrome.com/blog/css-text-wrap-balance/'>
+              text-wrap: balance
+            </BlankLink>{' '}
+            if available
           </li>
           <li>
             <BlankLink href='https://beta.nextjs.org/docs/rendering/server-and-client-components'>

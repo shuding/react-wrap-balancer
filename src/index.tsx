@@ -4,6 +4,7 @@ import React from 'react'
 import { useId, IS_SERVER, useIsomorphicLayoutEffect } from './utils'
 
 const SYMBOL_KEY = '__wrap_b'
+const SYMBOL_NATIVE_KEY = '__wrap_n'
 const SYMBOL_OBSERVER_KEY = '__wrap_o'
 
 interface WrapperElement extends HTMLElement {
@@ -19,6 +20,11 @@ type RelayoutFn = (
 declare global {
   interface Window {
     [SYMBOL_KEY]: RelayoutFn
+    // A flag to indicate whether the browser supports text-balancing natively.
+    // undefined: not injected
+    // 1: injected and supported
+    // 2: injected but not supported
+    [SYMBOL_NATIVE_KEY]?: number
   }
 }
 
@@ -83,20 +89,31 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
 
 const RELAYOUT_STR = relayout.toString()
 
+const isTextWrapBalanceSupported = `(self.CSS&&CSS.supports("text-wrap","balance")?1:2)`
+
 const createScriptElement = (
   injected: boolean,
   nonce?: string,
   suffix: string = ''
-) => (
-  <script
-    suppressHydrationWarning
-    dangerouslySetInnerHTML={{
-      // Calculate the balance initially for SSR
-      __html: (injected ? '' : `self.${SYMBOL_KEY}=${RELAYOUT_STR};`) + suffix,
-    }}
-    nonce={nonce}
-  />
-)
+) => {
+  if (suffix) {
+    suffix = `self.${SYMBOL_NATIVE_KEY}!=1&&${suffix}`
+  }
+  return (
+    <script
+      suppressHydrationWarning
+      dangerouslySetInnerHTML={{
+        // Calculate the balance initially for SSR
+        __html:
+          (injected
+            ? ''
+            : `self.${SYMBOL_NATIVE_KEY}=self.${SYMBOL_NATIVE_KEY}||${isTextWrapBalanceSupported};self.${SYMBOL_KEY}=${RELAYOUT_STR};`) +
+          suffix,
+      }}
+      nonce={nonce}
+    />
+  )
+}
 
 interface BalancerOwnProps<
   ElementType extends React.ElementType = React.ElementType
@@ -157,6 +174,9 @@ const Balancer = <ElementType extends React.ElementType = React.ElementType>({
 
   // Re-balance on content change and on mount/hydration.
   useIsomorphicLayoutEffect(() => {
+    // Skip if the browser supports text-balancing natively.
+    if (self[SYMBOL_NATIVE_KEY] === 1) return
+
     if (wrapperRef.current) {
       // Re-assign the function here as the component can be dynamically rendered, and script tag won't work in that case.
       ;(self[SYMBOL_KEY] = relayout)(0, ratio, wrapperRef.current)
@@ -165,6 +185,9 @@ const Balancer = <ElementType extends React.ElementType = React.ElementType>({
 
   // Remove the observer when unmounting.
   useIsomorphicLayoutEffect(() => {
+    // Skip if the browser supports text-balancing natively.
+    if (self[SYMBOL_NATIVE_KEY] === 1) return
+
     return () => {
       if (!wrapperRef.current) return
 
@@ -209,6 +232,7 @@ To:
           display: 'inline-block',
           verticalAlign: 'top',
           textDecoration: 'inherit',
+          textWrap: 'balance',
         }}
         suppressHydrationWarning
       >
