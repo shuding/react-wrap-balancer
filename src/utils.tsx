@@ -14,7 +14,7 @@ function useIdPolyfill() {
 
   useIsomorphicLayoutEffect(() => {
     if (id === undefined) {
-      setId(++ID)
+      setId(genId)
     }
 
     serverHandoffComplete = true
