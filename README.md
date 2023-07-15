@@ -36,6 +36,7 @@ function Title() {
 
 - **`as`** (_optional_): The HTML tag to be used to wrap the text content. Default to `span`.
 - **`ratio`** (_optional_): The ratio of “balance-ness”, 0 <= ratio <= 1. Default to `1`.
+- **`preferNative`** (_optional_): An option to skip the re-balance logic and use the native CSS text-balancing if supported. Default to `true`.
 - **`nonce`** (_optional_): The [nonce](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) attribute to allowlist inline script injection by the component.
 
 ### `<Provider>`

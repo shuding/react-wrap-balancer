@@ -131,6 +131,12 @@ interface BalancerOwnProps<
    */
   ratio?: number
   /**
+   * An option to skip the re-balance logic
+   * and use the native CSS text-balancing if supported.
+   * @default true
+   */
+  preferNative?: boolean
+  /**
    * The nonce attribute to allowlist inline script injection by the component.
    */
   nonce?: string
@@ -163,6 +169,7 @@ const Provider: React.FC<{
 
 const Balancer = <ElementType extends React.ElementType = React.ElementType>({
   ratio = 1,
+  preferNative = true,
   nonce,
   children,
   ...props
@@ -175,18 +182,18 @@ const Balancer = <ElementType extends React.ElementType = React.ElementType>({
   // Re-balance on content change and on mount/hydration.
   useIsomorphicLayoutEffect(() => {
     // Skip if the browser supports text-balancing natively.
-    if (self[SYMBOL_NATIVE_KEY] === 1) return
+    if (preferNative && self[SYMBOL_NATIVE_KEY] === 1) return
 
     if (wrapperRef.current) {
       // Re-assign the function here as the component can be dynamically rendered, and script tag won't work in that case.
       ;(self[SYMBOL_KEY] = relayout)(0, ratio, wrapperRef.current)
     }
-  }, [children, ratio])
+  }, [children, preferNative, ratio])
 
   // Remove the observer when unmounting.
   useIsomorphicLayoutEffect(() => {
     // Skip if the browser supports text-balancing natively.
-    if (self[SYMBOL_NATIVE_KEY] === 1) return
+    if (preferNative && self[SYMBOL_NATIVE_KEY] === 1) return
 
     return () => {
       if (!wrapperRef.current) return
@@ -197,7 +204,7 @@ const Balancer = <ElementType extends React.ElementType = React.ElementType>({
       resizeObserver.disconnect()
       delete wrapperRef.current[SYMBOL_OBSERVER_KEY]
     }
-  }, [])
+  }, [preferNative])
 
   if (process.env.NODE_ENV === 'development') {
     // In development, we check `children`'s type to ensure we are not wrapping
@@ -232,7 +239,7 @@ To:
           display: 'inline-block',
           verticalAlign: 'top',
           textDecoration: 'inherit',
-          textWrap: 'balance',
+          textWrap: preferNative ? 'balance' : 'initial',
         }}
         suppressHydrationWarning
       >
