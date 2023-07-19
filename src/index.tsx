@@ -151,16 +151,31 @@ type BalancerProps<ElementType extends React.ElementType> =
  * An optional provider to inject the global relayout function, so all children
  * Balancer components can share it.
  */
-const BalancerContext = React.createContext<boolean>(false)
+const BalancerContext = React.createContext<{
+  preferNative: boolean
+  hasProvider: boolean
+}>({ preferNative: true, hasProvider: false })
 const Provider: React.FC<{
+  /**
+   * An option to skip the re-balance logic
+   * and use the native CSS text-balancing if supported.
+   * @default true
+   */
+  preferNative?: boolean
   /**
    * The nonce attribute to allowlist inline script injection by the component
    */
   nonce?: string
   children?: React.ReactNode
-}> = ({ nonce, children }) => {
+}> = ({ preferNative = true, nonce, children }) => {
+  const contextValue = React.useMemo(() => {
+    return {
+      preferNative,
+      hasProvider: true,
+    }
+  }, [preferNative])
   return (
-    <BalancerContext.Provider value={true}>
+    <BalancerContext.Provider value={contextValue}>
       {createScriptElement(false, nonce)}
       {children}
     </BalancerContext.Provider>
@@ -176,24 +191,25 @@ const Balancer = <ElementType extends React.ElementType = React.ElementType>({
 }: BalancerProps<ElementType>) => {
   const id = useId()
   const wrapperRef = React.useRef<WrapperElement>()
-  const hasProvider = React.useContext(BalancerContext)
+  const contextValue = React.useContext(BalancerContext)
+  const preferNativeBalancing = preferNative && contextValue.preferNative
   const Wrapper: React.ElementType = props.as || 'span'
 
   // Re-balance on content change and on mount/hydration.
   useIsomorphicLayoutEffect(() => {
     // Skip if the browser supports text-balancing natively.
-    if (preferNative && self[SYMBOL_NATIVE_KEY] === 1) return
+    if (preferNativeBalancing && self[SYMBOL_NATIVE_KEY] === 1) return
 
     if (wrapperRef.current) {
       // Re-assign the function here as the component can be dynamically rendered, and script tag won't work in that case.
       ;(self[SYMBOL_KEY] = relayout)(0, ratio, wrapperRef.current)
     }
-  }, [children, preferNative, ratio])
+  }, [children, preferNativeBalancing, ratio])
 
   // Remove the observer when unmounting.
   useIsomorphicLayoutEffect(() => {
     // Skip if the browser supports text-balancing natively.
-    if (preferNative && self[SYMBOL_NATIVE_KEY] === 1) return
+    if (preferNativeBalancing && self[SYMBOL_NATIVE_KEY] === 1) return
 
     return () => {
       if (!wrapperRef.current) return
@@ -204,7 +220,7 @@ const Balancer = <ElementType extends React.ElementType = React.ElementType>({
       resizeObserver.disconnect()
       delete wrapperRef.current[SYMBOL_OBSERVER_KEY]
     }
-  }, [preferNative])
+  }, [preferNativeBalancing])
 
   if (process.env.NODE_ENV === 'development') {
     // In development, we check `children`'s type to ensure we are not wrapping
@@ -246,7 +262,7 @@ To:
         {children}
       </Wrapper>
       {createScriptElement(
-        hasProvider,
+        contextValue.hasProvider,
         nonce,
         `self.${SYMBOL_KEY}("${id}",${ratio})`
       )}
