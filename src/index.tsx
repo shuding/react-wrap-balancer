@@ -184,7 +184,7 @@ const Provider: React.FC<{
 
 const Balancer = <ElementType extends React.ElementType = React.ElementType>({
   ratio = 1,
-  preferNative = true,
+  preferNative,
   nonce,
   children,
   ...props
@@ -192,7 +192,7 @@ const Balancer = <ElementType extends React.ElementType = React.ElementType>({
   const id = useId()
   const wrapperRef = React.useRef<WrapperElement>()
   const contextValue = React.useContext(BalancerContext)
-  const preferNativeBalancing = preferNative && contextValue.preferNative
+  const preferNativeBalancing = preferNative ?? contextValue.preferNative
   const Wrapper: React.ElementType = props.as || 'span'
 
   // Re-balance on content change and on mount/hydration.
