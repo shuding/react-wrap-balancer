@@ -44,11 +44,13 @@ export default function CustomBalanceRatio() {
                 </Balancer>
               </h2>
               <h2 className='ratio-title'>
-                <Balancer ratio={currentRatio}>
+                <Balancer ratio={currentRatio} preferNative={false}>
                   The quick brown fox jumps over the lazy dog
                 </Balancer>
               </h2>
-              <code>{`<Balancer ratio={${ratio.toFixed(2)}}>`}</code>
+              <code>{`<Balancer ratio={${ratio.toFixed(
+                2
+              )}} preferNative={false}>`}</code>
             </div>
           </div>
         </div>
@@ -88,7 +90,8 @@ export default function CustomBalanceRatio() {
           text-wrap: balance
         </BlankLink>
         ) is available, React Wrap Balancer will use it instead. And the `ratio`
-        option will be ignored in that case.
+        option will be ignored in that case. You can provide the `preferNative`
+        option to opt out.
       </p>
     </>
   )
