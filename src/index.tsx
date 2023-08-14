@@ -255,7 +255,7 @@ To:
           display: 'inline-block',
           verticalAlign: 'top',
           textDecoration: 'inherit',
-          textWrap: preferNative ? 'balance' : 'initial',
+          textWrap: preferNativeBalancing ? 'balance' : 'initial',
         }}
         suppressHydrationWarning
       >
