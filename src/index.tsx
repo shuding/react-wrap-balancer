@@ -140,7 +140,6 @@ interface BalancerOwnProps<
    * The nonce attribute to allowlist inline script injection by the component.
    */
   nonce?: string
-  children?: React.ReactNode
 }
 
 type BalancerProps<ElementType extends React.ElementType> =
