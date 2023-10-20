@@ -31,7 +31,9 @@ declare global {
 const relayout: RelayoutFn = (id, ratio, wrapper) => {
   wrapper =
     wrapper || document.querySelector<WrapperElement>(`[data-br="${id}"]`)
-  const container = wrapper.parentElement
+  const container = wrapper?.parentElement
+
+  if (!container) { return; }
 
   const update = (width: number) => (wrapper.style.maxWidth = width + 'px')
 
