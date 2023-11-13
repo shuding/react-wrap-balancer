@@ -71,7 +71,7 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
   // the function.
   if (!wrapper['__wrap_o']) {
     if (typeof ResizeObserver !== 'undefined') {
-      ;(wrapper['__wrap_o'] = new ResizeObserver(() => {
+      ; (wrapper['__wrap_o'] = new ResizeObserver(() => {
         self.__wrap_b(0, +wrapper.dataset.brr, wrapper)
       })).observe(container)
     } else {
@@ -79,8 +79,8 @@ const relayout: RelayoutFn = (id, ratio, wrapper) => {
       if (process.env.NODE_ENV === 'development') {
         console.warn(
           'The browser you are using does not support the ResizeObserver API. ' +
-            'Please consider add polyfill for this API to avoid potential layout shifts or upgrade your browser. ' +
-            'Read more: https://github.com/shuding/react-wrap-balancer#browser-support-information'
+          'Please consider add polyfill for this API to avoid potential layout shifts or upgrade your browser. ' +
+          'Read more: https://github.com/shuding/react-wrap-balancer#browser-support-information'
         )
       }
     }
@@ -96,19 +96,21 @@ const createScriptElement = (
   nonce?: string,
   suffix: string = ''
 ) => {
+  if (injected) {
+    return null
+  }
+
   if (suffix) {
     suffix = `self.${SYMBOL_NATIVE_KEY}!=1&&${suffix}`
   }
+
   return (
     <script
       suppressHydrationWarning
       dangerouslySetInnerHTML={{
         // Calculate the balance initially for SSR
         __html:
-          (injected
-            ? ''
-            : `self.${SYMBOL_NATIVE_KEY}=self.${SYMBOL_NATIVE_KEY}||${isTextWrapBalanceSupported};self.${SYMBOL_KEY}=${RELAYOUT_STR};`) +
-          suffix,
+          `self.${SYMBOL_NATIVE_KEY}=self.${SYMBOL_NATIVE_KEY}||${isTextWrapBalanceSupported};self.${SYMBOL_KEY}=${RELAYOUT_STR};` + suffix,
       }}
       nonce={nonce}
     />
@@ -144,7 +146,7 @@ interface BalancerOwnProps<
 
 type BalancerProps<ElementType extends React.ElementType> =
   BalancerOwnProps<ElementType> &
-    Omit<React.ComponentPropsWithoutRef<ElementType>, keyof BalancerOwnProps>
+  Omit<React.ComponentPropsWithoutRef<ElementType>, keyof BalancerOwnProps>
 
 /**
  * An optional provider to inject the global relayout function, so all children
@@ -201,7 +203,7 @@ const Balancer = <ElementType extends React.ElementType = React.ElementType>({
 
     if (wrapperRef.current) {
       // Re-assign the function here as the component can be dynamically rendered, and script tag won't work in that case.
-      ;(self[SYMBOL_KEY] = relayout)(0, ratio, wrapperRef.current)
+      ; (self[SYMBOL_KEY] = relayout)(0, ratio, wrapperRef.current)
     }
   }, [children, preferNativeBalancing, ratio])
 
