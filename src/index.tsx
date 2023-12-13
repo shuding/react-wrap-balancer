@@ -186,13 +186,14 @@ const Balancer = <ElementType extends React.ElementType = React.ElementType>({
   preferNative,
   nonce,
   children,
+  as,
   ...props
 }: BalancerProps<ElementType>) => {
   const id = useId()
   const wrapperRef = React.useRef<WrapperElement>()
   const contextValue = React.useContext(BalancerContext)
   const preferNativeBalancing = preferNative ?? contextValue.preferNative
-  const Wrapper: React.ElementType = props.as || 'span'
+  const Wrapper: React.ElementType = as || 'span'
 
   // Re-balance on content change and on mount/hydration.
   useIsomorphicLayoutEffect(() => {
