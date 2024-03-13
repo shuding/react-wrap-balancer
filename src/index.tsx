@@ -31,7 +31,9 @@ declare global {
 const relayout: RelayoutFn = (id, ratio, wrapper) => {
   wrapper =
     wrapper || document.querySelector<WrapperElement>(`[data-br="${id}"]`)
-  const container = wrapper.parentElement
+  const container = wrapper?.parentElement
+
+  if (!container) { return; }
 
   const update = (width: number) => (wrapper.style.maxWidth = width + 'px')
 
@@ -181,94 +183,105 @@ const Provider: React.FC<{
   )
 }
 
-const Balancer = <ElementType extends React.ElementType = React.ElementType>({
-  ratio = 1,
-  preferNative,
-  nonce,
-  children,
-  as,
-  ...props
-}: BalancerProps<ElementType>) => {
-  const id = useId()
-  const wrapperRef = React.useRef<WrapperElement>()
-  const contextValue = React.useContext(BalancerContext)
-  const preferNativeBalancing = preferNative ?? contextValue.preferNative
-  const Wrapper: React.ElementType = as || 'span'
+const Balancer = React.forwardRef(
+  <ElementType extends React.ElementType = React.ElementType>(
+    {
+      ratio = 1,
+      preferNative,
+      nonce,
+      children,
+      as,
+      ...props
+    }: BalancerProps<ElementType>,
+    ref
+  ) => {
+    const id = useId()
+    const wrapperRef = React.useRef<WrapperElement>()
+    const contextValue = React.useContext(BalancerContext)
+    const preferNativeBalancing = preferNative ?? contextValue.preferNative
+    const Wrapper: React.ElementType = as || 'span'
 
-  // Re-balance on content change and on mount/hydration.
-  useIsomorphicLayoutEffect(() => {
-    // Skip if the browser supports text-balancing natively.
-    if (preferNativeBalancing && self[SYMBOL_NATIVE_KEY] === 1) return
+    React.useImperativeHandle(ref, () => wrapperRef.current, [])
 
-    if (wrapperRef.current) {
-      // Re-assign the function here as the component can be dynamically rendered, and script tag won't work in that case.
-      ;(self[SYMBOL_KEY] = relayout)(0, ratio, wrapperRef.current)
-    }
-  }, [children, preferNativeBalancing, ratio])
+    // Re-balance on content change and on mount/hydration.
+    useIsomorphicLayoutEffect(() => {
+      // Skip if the browser supports text-balancing natively.
+      if (preferNativeBalancing && self[SYMBOL_NATIVE_KEY] === 1) return
 
-  // Remove the observer when unmounting.
-  useIsomorphicLayoutEffect(() => {
-    // Skip if the browser supports text-balancing natively.
-    if (preferNativeBalancing && self[SYMBOL_NATIVE_KEY] === 1) return
+      if (wrapperRef.current) {
+        // Re-assign the function here as the component can be dynamically rendered, and script tag won't work in that case.
+        ;(self[SYMBOL_KEY] = relayout)(0, ratio, wrapperRef.current)
+      }
+    }, [children, preferNativeBalancing, ratio])
 
-    return () => {
-      if (!wrapperRef.current) return
+    // Remove the observer when unmounting.
+    useIsomorphicLayoutEffect(() => {
+      // Skip if the browser supports text-balancing natively.
+      if (preferNativeBalancing && self[SYMBOL_NATIVE_KEY] === 1) return
 
-      const resizeObserver = wrapperRef.current[SYMBOL_OBSERVER_KEY]
-      if (!resizeObserver) return
+      return () => {
+        if (!wrapperRef.current) return
 
-      resizeObserver.disconnect()
-      delete wrapperRef.current[SYMBOL_OBSERVER_KEY]
-    }
-  }, [preferNativeBalancing])
+        const resizeObserver = wrapperRef.current[SYMBOL_OBSERVER_KEY]
+        if (!resizeObserver) return
 
-  if (process.env.NODE_ENV === 'development') {
-    // In development, we check `children`'s type to ensure we are not wrapping
-    // elements like <p> or <h1> inside. Instead <Balancer> should directly
-    // wrap text nodes.
-    if (children && !Array.isArray(children) && typeof children === 'object') {
+        resizeObserver.disconnect()
+        delete wrapperRef.current[SYMBOL_OBSERVER_KEY]
+      }
+    }, [preferNativeBalancing])
+
+    if (process.env.NODE_ENV === 'development') {
+      // In development, we check `children`'s type to ensure we are not wrapping
+      // elements like <p> or <h1> inside. Instead <Balancer> should directly
+      // wrap text nodes.
       if (
-        'type' in children &&
-        typeof children.type === 'string' &&
-        children.type !== 'span'
+        children &&
+        !Array.isArray(children) &&
+        typeof children === 'object'
       ) {
-        console.warn(
-          `<Balancer> should not wrap <${children.type}> inside. Instead, it should directly wrap text or inline nodes.
+        if (
+          'type' in children &&
+          typeof children.type === 'string' &&
+          children.type !== 'span'
+        ) {
+          console.warn(
+            `<Balancer> should not wrap <${children.type}> inside. Instead, it should directly wrap text or inline nodes.
 
 Try changing this:
   <Balancer><${children.type}>content</${children.type}></Balancer>
 To:
   <${children.type}><Balancer>content</Balancer></${children.type}>`
-        )
+          )
+        }
       }
     }
-  }
 
-  return (
-    <>
-      <Wrapper
-        {...props}
-        data-br={id}
-        data-brr={ratio}
-        ref={wrapperRef}
-        style={{
-          display: 'inline-block',
-          verticalAlign: 'top',
-          textDecoration: 'inherit',
-          textWrap: preferNativeBalancing ? 'balance' : 'initial',
-        }}
-        suppressHydrationWarning
-      >
-        {children}
-      </Wrapper>
-      {createScriptElement(
-        contextValue.hasProvider,
-        nonce,
-        `self.${SYMBOL_KEY}("${id}",${ratio})`
-      )}
-    </>
-  )
-}
+    return (
+      <>
+        <Wrapper
+          {...props}
+          data-br={id}
+          data-brr={ratio}
+          ref={wrapperRef}
+          style={{
+            display: 'inline-block',
+            verticalAlign: 'top',
+            textDecoration: 'inherit',
+            textWrap: preferNativeBalancing ? 'balance' : 'initial',
+          }}
+          suppressHydrationWarning
+        >
+          {children}
+        </Wrapper>
+        {createScriptElement(
+          contextValue.hasProvider,
+          nonce,
+          `self.${SYMBOL_KEY}("${id}",${ratio})`
+        )}
+      </>
+    )
+  }
+)
 
 // As Next.js adds `display: none` to `body` for development, we need to trigger
 // a re-balance right after the style is removed, synchronously.
