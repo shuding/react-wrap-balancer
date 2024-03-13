@@ -190,6 +190,7 @@ const Balancer = React.forwardRef(
       preferNative,
       nonce,
       children,
+      as,
       ...props
     }: BalancerProps<ElementType>,
     ref
@@ -198,7 +199,7 @@ const Balancer = React.forwardRef(
     const wrapperRef = React.useRef<WrapperElement>()
     const contextValue = React.useContext(BalancerContext)
     const preferNativeBalancing = preferNative ?? contextValue.preferNative
-    const Wrapper: React.ElementType = props.as || 'span'
+    const Wrapper: React.ElementType = as || 'span'
 
     React.useImperativeHandle(ref, () => wrapperRef.current, [])
 
