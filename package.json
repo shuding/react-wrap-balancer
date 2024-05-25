@@ -1,6 +1,6 @@
 {
   "name": "react-wrap-balancer",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Simple React component that makes titles more readable.",
   "repository": {
     "type": "git",
@@ -11,20 +11,13 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsup src/index.tsx",
     "dev": "tsup src/index.tsx --watch",
     "dev:website": "turbo run dev --filter=website..."
   },
-  "keywords": [
-    "react",
-    "wrapping",
-    "text",
-    "typography"
-  ],
+  "keywords": ["react", "wrapping", "text", "typography"],
   "author": "Shu Ding <g@shud.in>",
   "license": "MIT",
   "devDependencies": {
