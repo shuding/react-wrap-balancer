@@ -86,7 +86,7 @@ export default function UseCases() {
         }
         b={
           <blockquote className='item'>
-            <Balancer>
+            <Balancer preferNative={false}>
               You have wakened not out of sleep, but into a prior dream, and
               that dream lies within another, and so on, to infinity, which is
               the number of grains of sand. The path that you are to take is
