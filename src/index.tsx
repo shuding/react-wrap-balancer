@@ -283,6 +283,8 @@ To:
   }
 )
 
+Balancer.displayName = 'Balancer'
+
 // As Next.js adds `display: none` to `body` for development, we need to trigger
 // a re-balance right after the style is removed, synchronously.
 if (!IS_SERVER && process.env.NODE_ENV !== 'production') {
